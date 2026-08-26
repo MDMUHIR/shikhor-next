@@ -163,6 +163,16 @@ export interface NoticeAnnouncement {
   isActive: boolean;
 }
 
+export interface HeroSlide {
+  id: string;
+  image: string;
+  alt: string;
+  link?: string;
+  courseId?: string;
+  order?: number;
+  isActive?: boolean;
+}
+
 export interface UserProfile {
   id: string;
   name: string;

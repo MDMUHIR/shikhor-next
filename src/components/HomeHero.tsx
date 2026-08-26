@@ -1,457 +1,376 @@
-import { useState, useEffect, useRef } from 'react';
-import type React from 'react';
-import { ChevronLeft, ChevronRight, Users, PlaySquare, GraduationCap, Video, ArrowRight, BookOpen, Sparkles, ExternalLink } from 'lucide-react';
+import { useEffect, useRef, useState } from "react";
+import type React from "react";
+import {
+  ArrowRight,
+  BookOpen,
+  ChevronLeft,
+  ChevronRight,
+  GraduationCap,
+  PlaySquare,
+  Users,
+  Video,
+} from "lucide-react";
+
+import { getActiveHeroSlides } from "../data/heroSlides";
 
 interface HomeHeroProps {
   onSelectCourse: (courseId: string) => void;
   onNavigateCourses: () => void;
 }
 
-export default function HomeHero({ onSelectCourse, onNavigateCourses }: HomeHeroProps) {
+const AUTOPLAY_INTERVAL = 2500;
+const SWIPE_THRESHOLD = 50;
+
+const courses = [
+  {
+    id: "ssc-27-foundation-batch",
+    title: "Class 9, 10",
+    subtitle: "SSC Preparation",
+    icon: GraduationCap,
+  },
+  {
+    id: "pcmb-1st-paper-combo-hsc28",
+    title: "College",
+    subtitle: "HSC Preparation",
+    icon: BookOpen,
+  },
+];
+
+const stats = [
+  {
+    value: "282,913",
+    label: "Students",
+    icon: Users,
+  },
+  {
+    value: "66",
+    label: "Courses",
+    icon: PlaySquare,
+  },
+  {
+    value: "28",
+    label: "Teachers",
+    icon: GraduationCap,
+  },
+  {
+    value: "5,062",
+    label: "Videos",
+    icon: Video,
+  },
+];
+
+export default function HomeHero({
+  onSelectCourse,
+  onNavigateCourses,
+}: HomeHeroProps) {
+  const slideContent = getActiveHeroSlides();
+
   const [activeSlide, setActiveSlide] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+
   const touchStartX = useRef<number | null>(null);
 
-  const bannerSlides = [
-    {
-      courseId: 'pcmb-1st-paper-combo-hsc28',
-      title: 'HSC 28 PCMB Combo Batch',
-      subtitle: 'Physics 1st • Chemistry 1st • Higher Math 1st • Biology 1st',
-      tag: 'ADMISSION & BOARD FOUNDATION',
-      badge: '50% OFF',
-      price: '৳ 9,990',
-      originalPrice: '৳ 20,000',
-      enrolled: '4,516+ Students Enrolled',
-      gradient: 'from-slate-950 via-blue-950/90 to-indigo-950/80',
-      accentGlow: 'from-blue-600/30 to-indigo-600/20',
-      borderColor: 'border-blue-500/30',
-      badgeColor: 'bg-blue-600 text-white',
-      image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1600&auto=format&fit=crop&q=85',
-      teachers: [
-        { name: 'Redwan Hushen', role: 'Physics Lead' },
-        { name: 'Hasan Anam', role: 'Higher Math' },
-        { name: 'Fahad Shovon', role: 'Chemistry' },
-        { name: 'Junnurain Khan', role: 'Biology' },
-      ],
-      highlights: ['240+ Live HD Classes', 'Complete 1st Paper Syllabus', '24/7 Doubt Solving'],
-    },
-    {
-      courseId: 'hsc-28-ebi-combo',
-      title: 'HSC 28 EBI 2.0 Batch',
-      subtitle: 'English 1st & 2nd • Bangla 1st & 2nd • ICT Full Paper',
-      tag: 'SPECIAL COMPULSORY COMBO',
-      badge: 'POPULAR BATCH',
-      price: '৳ 3,490',
-      originalPrice: '৳ 7,000',
-      enrolled: '3,820+ Students Enrolled',
-      gradient: 'from-slate-950 via-amber-950/90 to-orange-950/80',
-      accentGlow: 'from-amber-600/30 to-orange-600/20',
-      borderColor: 'border-amber-500/30',
-      badgeColor: 'bg-amber-600 text-white',
-      image: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1600&auto=format&fit=crop&q=85',
-      teachers: [
-        { name: 'Hamja Sir', role: 'English' },
-        { name: 'Kawsar Sir', role: 'Bangla' },
-        { name: 'Faysal Sir', role: 'ICT' },
-        { name: 'Jilani Sir', role: 'ICT' },
-      ],
-      highlights: ['120+ Interactive Classes', 'Special Grammar & Code Hacks', 'Full Exam Series'],
-    },
-    {
-      courseId: 'buet-medical-admission-mastery',
-      title: 'BUET & Medical Admission Mastery',
-      subtitle: 'Engineering Physics, Chemistry & Higher Math Mastery for Top Ranks',
-      tag: 'VARSITY & BUET ADMISSION',
-      badge: 'TOP CHOICE',
-      price: '৳ 7,490',
-      originalPrice: '৳ 15,000',
-      enrolled: '5,120+ Students Enrolled',
-      gradient: 'from-slate-950 via-purple-950/90 to-indigo-950/80',
-      accentGlow: 'from-purple-600/30 to-indigo-600/20',
-      borderColor: 'border-purple-500/30',
-      badgeColor: 'bg-purple-600 text-white',
-      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&auto=format&fit=crop&q=85',
-      teachers: [
-        { name: 'Redwan Hushen', role: 'Physics' },
-        { name: 'Hasan Anam', role: 'Higher Math' },
-        { name: 'Fahad Shovon', role: 'Chemistry' },
-      ],
-      highlights: ['20 Years BUET Solved', 'Live Speed Ranking Tests', '1-on-1 Top Tier Mentorship'],
-    },
-    {
-      courseId: 'ssc-27-foundation-batch',
-      title: 'SSC 27 Science Foundation Batch',
-      subtitle: 'Class 9-10 Physics • Chemistry • General & Higher Mathematics',
-      tag: 'PREMIER FOUNDATION',
-      badge: 'NEW BATCH',
-      price: '৳ 4,990',
-      originalPrice: '৳ 10,000',
-      enrolled: '2,940+ Students Enrolled',
-      gradient: 'from-slate-950 via-emerald-950/90 to-teal-950/80',
-      accentGlow: 'from-emerald-600/30 to-teal-600/20',
-      borderColor: 'border-emerald-500/30',
-      badgeColor: 'bg-emerald-600 text-white',
-      image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1600&auto=format&fit=crop&q=85',
-      teachers: [
-        { name: 'Redwan Hushen', role: 'Physics' },
-        { name: 'Hasan Anam', role: 'Higher Math' },
-        { name: 'Fahad Shovon', role: 'Chemistry' },
-      ],
-      highlights: ['180+ Animated Classes', 'Board Standard Test Papers', 'Parent SMS Report'],
-    },
-  ];
-
-  // Auto-scroll slider interval
   useEffect(() => {
-    if (isHovered) return;
-    const timer = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % bannerSlides.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [isHovered, bannerSlides.length]);
+    if (slideContent.length === 0) {
+      setActiveSlide(0);
+      return;
+    }
+    if (activeSlide >= slideContent.length) {
+      setActiveSlide(0);
+    }
+  }, [activeSlide, slideContent.length]);
+
+  useEffect(() => {
+    if (isPaused || slideContent.length <= 1) return;
+
+    const timer = window.setInterval(() => {
+      setActiveSlide((current) => (current + 1) % slideContent.length);
+    }, AUTOPLAY_INTERVAL);
+
+    return () => window.clearInterval(timer);
+  }, [isPaused, slideContent.length]);
 
   const handlePrev = () => {
-    setActiveSlide((prev) => (prev === 0 ? bannerSlides.length - 1 : prev - 1));
+    if (slideContent.length <= 1) return;
+    setActiveSlide((current) =>
+      current === 0 ? slideContent.length - 1 : current - 1,
+    );
   };
 
   const handleNext = () => {
-    setActiveSlide((prev) => (prev + 1) % bannerSlides.length);
+    if (slideContent.length <= 1) return;
+    setActiveSlide((current) => (current + 1) % slideContent.length);
   };
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
+  const goToSlide = (index: number) => {
+    if (index < 0 || index >= slideContent.length) return;
+    setActiveSlide(index);
   };
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    touchStartX.current = event.touches[0]?.clientX ?? null;
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
     if (touchStartX.current === null) return;
-    const touchEndX = e.changedTouches[0].clientX;
-    const diff = touchStartX.current - touchEndX;
-    if (diff > 50) {
+    const touchEndX = event.changedTouches[0]?.clientX;
+    if (touchEndX === undefined) {
+      touchStartX.current = null;
+      return;
+    }
+    const difference = touchStartX.current - touchEndX;
+    if (difference > SWIPE_THRESHOLD) {
       handleNext();
-    } else if (diff < -50) {
+    } else if (difference < -SWIPE_THRESHOLD) {
       handlePrev();
     }
     touchStartX.current = null;
   };
 
+  if (slideContent.length === 0) return null;
+
+  const prevIndex =
+    (activeSlide - 1 + slideContent.length) % slideContent.length;
+  const nextIndex = (activeSlide + 1) % slideContent.length;
+
   return (
-    <section className="relative pt-4 sm:pt-6 pb-12 overflow-hidden">
-      {/* Background Soft Aura Blurs */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-gradient-to-tr from-blue-200/40 via-purple-200/30 to-pink-200/30 blur-3xl -z-10 pointer-events-none rounded-full" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* ========================================================================= */}
-        {/* WIDE IMAGE BANNER SLIDER (Each image links directly to course view page) */}
-        {/* ========================================================================= */}
-        <div 
-          id="hero-wide-image-slider"
-          className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-slate-950 group"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-        >
-          {/* Slider Slides Container */}
-          <div 
-            className="flex transition-transform duration-700 ease-out"
-            style={{ transform: `translateX(-${activeSlide * 100}%)` }}
+    <div className="main bg-linear-to-br from-cyan-950 via-sky-950 to-teal-950">
+      <div className="container mx-auto px-4 pt-6 pb-12">
+        {/* ------------------------------------------------------------------ */}
+        {/* HERO SLIDER WITH SMOOTH ANIMATED TRACK & SIDE PEEKS */}
+        {/* ------------------------------------------------------------------ */}
+        <div className="mb-12 md:mb-16">
+          <div
+            className="relative flex items-center justify-center"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
           >
-            {bannerSlides.map((slide, idx) => (
-              <div
-                key={slide.courseId}
-                id={`banner-slide-${slide.courseId}`}
-                onClick={() => onSelectCourse(slide.courseId)}
-                className="w-full shrink-0 relative cursor-pointer select-none overflow-hidden"
-                style={{ minHeight: '340px' }}
-              >
-                {/* Wide Banner Aspect Ratio Wrapper */}
-                <div className="relative w-full h-[360px] sm:h-[420px] md:h-[460px] lg:h-[490px] flex items-center">
-                  
-                  {/* 1. Full-bleed Background Image */}
-                  <img
-                    src={slide.image}
-                    alt={slide.title}
-                    className="absolute inset-0 w-full h-full object-cover object-center transform scale-105 group-hover:scale-110 transition-transform duration-1000 ease-out"
-                  />
+            {/* Background Ambient Glow */}
+            <div className="pointer-events-none absolute inset-x-[6%] inset-y-[6%] -z-10 rounded-[2.5rem] bg-gradient-to-r from-emerald-500/20 via-fuchsia-500/10 to-cyan-400/20 blur-3xl" />
 
-                  {/* 2. Rich Multi-layered Gradient Darkening & Tone Shading */}
-                  <div className={`absolute inset-0 bg-gradient-to-r ${slide.gradient} opacity-95 sm:opacity-90`} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent" />
-                  <div className={`absolute inset-0 bg-gradient-to-tr ${slide.accentGlow} mix-blend-screen opacity-60`} />
-
-                  {/* 3. Subtle Hex/Grid High-Tech Texture Overlay */}
-                  <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px]" />
-
-                  {/* 4. Clickable Floating Course View Link Pill Indicator (Top-Right) */}
-                  <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
-                    <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-black/50 hover:bg-black/80 backdrop-blur-md border border-white/20 text-xs font-semibold text-white shadow-lg transition-all transform hover:scale-105">
-                      <span className="hidden sm:inline">Click to view course</span>
-                      <span className="sm:hidden">View Course</span>
-                      <ExternalLink className="w-3.5 h-3.5 text-blue-400" />
-                    </div>
-                  </div>
-
-                  {/* 5. Main Graphical Banner Content (Aligned across the wide banner) */}
-                  <div className="relative z-10 w-full px-6 sm:px-12 md:px-16 py-8 flex flex-col justify-between h-full">
-                    
-                    {/* Top Row: Category Tag & Badge */}
-                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-[11px] sm:text-xs font-bold text-amber-300 tracking-wide uppercase">
-                        <Sparkles className="w-3 h-3 text-amber-400" />
-                        {slide.tag}
-                      </span>
-                      <span className={`px-2.5 py-0.5 rounded-md text-[10px] sm:text-xs font-extrabold tracking-wider ${slide.badgeColor} shadow-md`}>
-                        {slide.badge}
-                      </span>
-                      <span className="text-white/70 text-xs font-medium hidden md:inline-flex items-center gap-1">
-                        <Users className="w-3.5 h-3.5 text-blue-400" />
-                        {slide.enrolled}
-                      </span>
-                    </div>
-
-                    {/* Middle: Prominent Course Graphics & Title */}
-                    <div className="my-auto py-2">
-                      <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight drop-shadow-md">
-                        {slide.title}
-                      </h2>
-                      <p className="text-sm sm:text-lg md:text-xl text-slate-200 font-semibold mt-2 max-w-3xl drop-shadow">
-                        {slide.subtitle}
-                      </p>
-
-                      {/* Course Key Bullet Highlights */}
-                      <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-4 text-xs sm:text-sm text-slate-200">
-                        {slide.highlights.map((h, i) => (
-                          <div key={i} className="inline-flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-3 py-1 rounded-lg border border-white/10">
-                            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                            <span>{h}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Bottom Row: Instructor Lineup + Price & Interactive Action Stamp */}
-                    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pt-2 border-t border-white/10">
-                      {/* Instructors Row */}
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-[11px] sm:text-xs font-medium text-slate-400 mr-1 hidden sm:inline">Instructors:</span>
-                        {slide.teachers.map((t, tidx) => (
-                          <div 
-                            key={tidx}
-                            className="px-2.5 py-1 rounded-md bg-white/10 backdrop-blur-sm border border-white/15 text-[11px] sm:text-xs font-medium text-slate-200 flex items-center gap-1"
-                          >
-                            <span className="font-semibold text-white">{t.name}</span>
-                            <span className="text-white/40 text-[10px]">({t.role})</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Price & View Banner Button */}
-                      <div className="flex items-center gap-3">
-                        <div className="text-left sm:text-right">
-                          <div className="text-xl sm:text-2xl font-black text-amber-300 leading-none">
-                            {slide.price}
-                          </div>
-                          <div className="text-xs text-slate-400 line-through mt-0.5">
-                            {slide.originalPrice}
-                          </div>
-                        </div>
-
-                        <div className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-lg group-hover:shadow-blue-500/40 transition-all">
-                          <span>View Course</span>
-                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
-
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Slider Prev / Next Glass Navigation Arrows */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handlePrev();
-            }}
-            className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-black/70 backdrop-blur-md text-white flex items-center justify-center border border-white/20 transition-all opacity-80 hover:opacity-100 hover:scale-110 shadow-xl"
-            aria-label="Previous Slide"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-          
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleNext();
-            }}
-            className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-black/70 backdrop-blur-md text-white flex items-center justify-center border border-white/20 transition-all opacity-80 hover:opacity-100 hover:scale-110 shadow-xl"
-            aria-label="Next Slide"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
-
-          {/* Slider Indicator Dots & Progress Bars */}
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 bg-black/40 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10">
-            {bannerSlides.map((_, idx) => (
+            {/* Previous Side Peek Banner Button (Desktop) */}
+            {slideContent.length > 1 && (
               <button
-                key={idx}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setActiveSlide(idx);
-                }}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  activeSlide === idx
-                    ? 'w-8 bg-amber-400 shadow-sm'
-                    : 'w-2 bg-white/40 hover:bg-white/70'
-                }`}
-                aria-label={`Slide ${idx + 1}`}
-              />
-            ))}
-          </div>
+                type="button"
+                aria-label="Previous slide"
+                onClick={handlePrev}
+                className="group/peek hidden lg:block absolute left-0 top-1/2 z-0 h-[82%] w-[13%] -translate-y-1/2 overflow-hidden rounded-2xl opacity-50 shadow-xl shadow-black/50 ring-1 ring-white/10 transition-all duration-300 hover:opacity-90 hover:scale-[1.03]"
+              >
+                <img
+                  key={slideContent[prevIndex].id}
+                  src={slideContent[prevIndex].image}
+                  alt={slideContent[prevIndex].alt}
+                  className="h-full w-full object-cover transition-opacity duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-l from-black/10 via-black/40 to-black/70 transition-opacity duration-300 group-hover/peek:opacity-60" />
+              </button>
+            )}
 
+            {/* Next Side Peek Banner Button (Desktop) */}
+            {slideContent.length > 1 && (
+              <button
+                type="button"
+                aria-label="Next slide"
+                onClick={handleNext}
+                className="group/peek hidden lg:block absolute right-0 top-1/2 z-0 h-[82%] w-[13%] -translate-y-1/2 overflow-hidden rounded-2xl opacity-50 shadow-xl shadow-black/50 ring-1 ring-white/10 transition-all duration-300 hover:opacity-90 hover:scale-[1.03]"
+              >
+                <img
+                  key={slideContent[nextIndex].id}
+                  src={slideContent[nextIndex].image}
+                  alt={slideContent[nextIndex].alt}
+                  className="h-full w-full object-cover transition-opacity duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-black/40 to-black/70 transition-opacity duration-300 group-hover/peek:opacity-60" />
+              </button>
+            )}
+
+            {/* Center Card Container */}
+            <div className="relative z-10 w-full lg:w-[70%] aspect-video overflow-hidden rounded-2xl md:rounded-3xl ring-1 ring-white/10 shadow-2xl shadow-black/50 bg-slate-900 transition-transform duration-500 hover:shadow-emerald-500/20">
+              {/* Animated Sliding Track */}
+              <div
+                className="flex h-full w-full transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${activeSlide * 100}%)` }}
+              >
+                {slideContent.map((slide) => (
+                  <div
+                    key={slide.id}
+                    className="h-full w-full shrink-0 flex-none"
+                  >
+                    <a
+                      className="group/card relative block h-full w-full overflow-hidden"
+                      href={
+                        slide.courseId
+                          ? `/combo/${slide.courseId}`
+                          : slide.link || "#"
+                      }
+                      onClick={(e) => {
+                        if (slide.courseId) {
+                          e.preventDefault();
+                          onSelectCourse(slide.courseId);
+                        }
+                      }}
+                    >
+                      <img
+                        src={slide.image}
+                        alt={slide.alt}
+                        decoding="async"
+                        className="h-full w-full object-contain"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover/card:bg-black/10 transition-colors duration-300" />
+                    </a>
+                  </div>
+                ))}
+              </div>
+
+              {/* Previous Control Button */}
+              <button
+                type="button"
+                aria-label="Previous slide"
+                onClick={handlePrev}
+                className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 z-20 flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-full border border-white/40 text-white/90 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50"
+              >
+                <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+              </button>
+
+              {/* Next Control Button */}
+              <button
+                type="button"
+                aria-label="Next slide"
+                onClick={handleNext}
+                className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-20 flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-full border border-white/40 text-white/90 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50"
+              >
+                <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
+              </button>
+
+              {/* Indicator Dots Bar */}
+              <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5">
+                {slideContent.map((s, idx) => {
+                  const isActive = activeSlide === idx;
+                  return (
+                    <button
+                      key={s.id}
+                      type="button"
+                      aria-label={`Go to slide ${idx + 1}`}
+                      onClick={() => goToSlide(idx)}
+                      className={`relative h-1.5 rounded-full overflow-hidden bg-white/30 transition-all duration-300 ${
+                        isActive
+                          ? "w-6 sm:w-8 bg-white"
+                          : "w-1.5 sm:w-2 hover:bg-white/50"
+                      }`}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* 2 Dark Teal / Cyan Feature Cards Side-by-Side (from Screenshot #2) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
-          
-          {/* Card 1: Online Batches are ongoing! */}
-          <div className="bg-[#0b242a] text-white rounded-3xl p-6 sm:p-8 border border-teal-900/50 shadow-xl flex flex-col justify-between relative overflow-hidden group hover:border-teal-700/60 transition-all">
-            <div className="absolute -top-12 -right-12 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all" />
-            
-            <div>
-              <div className="inline-block px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-xs font-semibold uppercase tracking-wider mb-3">
+        {/* ------------------------------------------------------------------ */}
+        {/* FEATURE & STATS CARDS */}
+        {/* ------------------------------------------------------------------ */}
+        <div className="grid lg:grid-cols-2 gap-8 mb-12">
+          {/* ONLINE COURSES CARD */}
+          <div className="bg-gradient-to-br from-emerald-900/50 via-teal-900/50 to-cyan-900/50 backdrop-blur-lg rounded-2xl p-6 md:p-8 border border-emerald-500/20 flex flex-col">
+            <div className="flex items-center justify-between mb-6">
+              <span className="bg-emerald-500/20 text-emerald-300 px-4 py-2 rounded-full text-sm font-medium">
                 Online Course
-              </div>
-              <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-1">
-                Online Batches are ongoing!
-              </h3>
-              <p className="text-teal-200/80 text-sm mb-6">
-                Book your seat now!
-              </p>
+              </span>
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+              Online Batches are ongoing!
+            </h2>
+            <h3 className="text-xl md:text-2xl text-emerald-300 mb-6">
+              Book your seat now!
+            </h3>
 
-              {/* Items List */}
-              <div className="space-y-3 mb-6">
-                <div
-                  onClick={() => onSelectCourse('ssc-27-foundation-batch')}
-                  className="bg-[#0f333b]/80 hover:bg-[#14424d] p-4 rounded-2xl border border-teal-800/40 flex items-center gap-4 cursor-pointer transition-all"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-400 shrink-0">
-                    <GraduationCap className="w-5 h-5" />
+            <div className="grid grid-cols-1 gap-4 mb-6 flex-grow">
+              {courses.map((course) => {
+                const Icon = course.icon;
+                return (
+                  <div
+                    key={course.id}
+                    tabIndex={0}
+                    onClick={() => onSelectCourse(course.id)}
+                    className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-600/30 hover:border-emerald-400/50 transition-all duration-300 group cursor-pointer flex items-start space-x-3"
+                  >
+                    <div className="text-emerald-400 mb-3 group-hover:text-emerald-300 transition-colors flex-shrink-0">
+                      <Icon className="w-8 h-8" />
+                    </div>
+                    <div>
+                      <h4 className="text-white font-semibold text-base md:text-lg mb-1">
+                        {course.title}
+                      </h4>
+                      <p className="text-slate-400 text-sm md:text-base">
+                        {course.subtitle}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-bold text-white text-base">Class 9, 10</h4>
-                    <p className="text-xs text-teal-300/80">SSC Preparation</p>
-                  </div>
-                </div>
-
-                <div
-                  onClick={() => onSelectCourse('pcmb-1st-paper-combo-hsc28')}
-                  className="bg-[#0f333b]/80 hover:bg-[#14424d] p-4 rounded-2xl border border-teal-800/40 flex items-center gap-4 cursor-pointer transition-all"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-400 shrink-0">
-                    <BookOpen className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-white text-base">College</h4>
-                    <p className="text-xs text-teal-300/80">HSC Preparation</p>
-                  </div>
-                </div>
-              </div>
+                );
+              })}
             </div>
 
             <button
+              type="button"
               onClick={onNavigateCourses}
-              className="inline-flex items-center gap-2 text-teal-300 hover:text-white text-sm font-semibold group/btn transition-colors"
+              className="flex items-center text-emerald-400 hover:text-emerald-300 font-medium group transition-colors text-sm md:text-base mt-auto"
             >
               <span>See All Courses</span>
-              <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform w-4 h-4" />
             </button>
           </div>
 
-          {/* Card 2: See the stats! */}
-          <div className="bg-[#0b242a] text-white rounded-3xl p-6 sm:p-8 border border-teal-900/50 shadow-xl flex flex-col justify-between relative overflow-hidden group hover:border-teal-700/60 transition-all">
-            <div className="absolute -top-12 -right-12 w-48 h-48 bg-cyan-500/10 rounded-full blur-2xl group-hover:bg-cyan-500/20 transition-all" />
-
-            <div>
-              <div className="inline-block px-3 py-1 rounded-full bg-cyan-500/15 border border-cyan-400/30 text-cyan-300 text-xs font-semibold uppercase tracking-wider mb-3">
+          {/* STATS CARD */}
+          <div className="bg-gradient-to-br from-cyan-900/50 via-sky-900/50 to-blue-900/50 backdrop-blur-lg rounded-2xl p-6 md:p-8 border border-cyan-500/20 flex flex-col">
+            <div className="flex items-center justify-between mb-6">
+              <span className="bg-cyan-500/20 text-cyan-300 px-4 py-2 rounded-full text-sm font-medium">
                 Online Course
-              </div>
-              <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-1">
-                See the stats!
-              </h3>
-              <p className="text-cyan-200/80 text-sm mb-6">
-                The trust we are building!
-              </p>
+              </span>
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+              See the stats!
+            </h2>
+            <h3 className="text-xl md:text-2xl text-cyan-300 mb-6">
+              The trust we are building!
+            </h3>
 
-              {/* 2x2 Stats Grid */}
-              <div className="grid grid-cols-2 gap-3 mb-6">
-                <div className="bg-[#0f333b]/80 p-4 rounded-2xl border border-teal-800/40 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-400/30 flex items-center justify-center text-cyan-400 shrink-0">
-                    <Users className="w-5 h-5" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 flex-grow">
+              {stats.map((stat) => {
+                const Icon = stat.icon;
+                return (
+                  <div
+                    key={stat.label}
+                    tabIndex={0}
+                    className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-3 border border-slate-600/30 hover:border-cyan-400/50 transition-all duration-300 group cursor-pointer flex items-start space-x-3"
+                  >
+                    <div className="w-12 h-12 bg-gradient-to-br from-cyan-400 via-sky-500 to-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Icon className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="text-white font-semibold text-base md:text-lg mb-1">
+                        {stat.value}
+                      </h4>
+                      <p className="text-slate-400 text-sm md:text-base">
+                        {stat.label}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-lg sm:text-xl font-extrabold text-white leading-none">
-                      282,902
-                    </p>
-                    <p className="text-xs text-cyan-300/80 mt-1 font-medium">Students</p>
-                  </div>
-                </div>
-
-                <div className="bg-[#0f333b]/80 p-4 rounded-2xl border border-teal-800/40 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-400 shrink-0">
-                    <PlaySquare className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <p className="text-lg sm:text-xl font-extrabold text-white leading-none">
-                      66
-                    </p>
-                    <p className="text-xs text-cyan-300/80 mt-1 font-medium">Courses</p>
-                  </div>
-                </div>
-
-                <div className="bg-[#0f333b]/80 p-4 rounded-2xl border border-teal-800/40 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-400/30 flex items-center justify-center text-indigo-400 shrink-0">
-                    <GraduationCap className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <p className="text-lg sm:text-xl font-extrabold text-white leading-none">
-                      29
-                    </p>
-                    <p className="text-xs text-cyan-300/80 mt-1 font-medium">Teachers</p>
-                  </div>
-                </div>
-
-                <div className="bg-[#0f333b]/80 p-4 rounded-2xl border border-teal-800/40 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-400/30 flex items-center justify-center text-sky-400 shrink-0">
-                    <Video className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <p className="text-lg sm:text-xl font-extrabold text-white leading-none">
-                      5,059
-                    </p>
-                    <p className="text-xs text-cyan-300/80 mt-1 font-medium">Videos</p>
-                  </div>
-                </div>
-              </div>
+                );
+              })}
             </div>
 
             <button
+              type="button"
               onClick={onNavigateCourses}
-              className="inline-flex items-center gap-2 text-cyan-300 hover:text-white text-sm font-semibold group/btn transition-colors"
+              className="flex items-center text-cyan-400 hover:text-cyan-300 font-medium group transition-colors text-sm md:text-base mt-auto"
             >
               <span>See All Courses</span>
-              <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform w-4 h-4" />
             </button>
           </div>
-
         </div>
-
       </div>
-    </section>
+    </div>
   );
 }
-
