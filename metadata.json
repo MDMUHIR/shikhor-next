@@ -1,0 +1,6 @@
+{
+  "name": "SHIKHOR",
+  "description": "SHIKHOR (শিখর) is Bangladesh's premier online learning platform for HSC, SSC, and university admission excellence, featuring structured live courses, timed exams, learning paths, and student dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
