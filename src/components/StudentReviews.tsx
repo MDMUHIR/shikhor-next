@@ -1,67 +1,169 @@
-import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { 
-  Star, CheckCircle2, ChevronLeft, ChevronRight, Quote, 
-  Plus, MessageSquare, Send, X, ArrowRight, ShieldCheck 
-} from 'lucide-react';
-import { useApp } from '../context/AppContext';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Star,
+  CheckCircle2,
+  Quote,
+  Plus,
+  Send,
+  X,
+  ArrowRight,
+  ShieldCheck,
+} from "lucide-react";
+import { useApp } from "../context/AppContext";
 
 export default function StudentReviews() {
   const navigate = useNavigate();
   const { reviews, handleAddReview, user, setIsAuthOpen } = useApp();
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Review submission modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rating, setRating] = useState(5);
-  const [name, setName] = useState(user?.name || '');
-  const [college, setCollege] = useState(user?.college || '');
-  const [reviewText, setReviewText] = useState('');
+  const [name, setName] = useState(user?.name || "");
+  const [college, setCollege] = useState(user?.college || "");
+  const [reviewText, setReviewText] = useState("");
   const [submittedToast, setSubmittedToast] = useState(false);
 
   // Filter visible reviews (featured or approved)
-  const visibleReviews = reviews.filter((r) => r.status !== 'rejected');
+  const visibleReviews = reviews.filter((r) => r.status !== "rejected");
 
-  const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: -340, behavior: 'smooth' });
-    }
+  // Split into two rows for the opposing marquees. Duplicate reviews if the
+  // list is short so the loop always has enough cards to feel continuous.
+  const ensureMinLength = (list: typeof visibleReviews, min: number) => {
+    if (list.length === 0) return list;
+    const out = [...list];
+    while (out.length < min) out.push(...list);
+    return out;
   };
 
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: 340, behavior: 'smooth' });
-    }
-  };
+  const half = Math.ceil(visibleReviews.length / 2);
+  const rowTopSource = ensureMinLength(visibleReviews.slice(0, half) || [], 6);
+  const rowBottomSource = ensureMinLength(visibleReviews.slice(half) || [], 6);
+
+  // Duplicate each row's content once so the CSS animation can loop
+  // seamlessly from -50% back to 0%.
+  const rowTop = [...rowTopSource, ...rowTopSource];
+  const rowBottom = [...rowBottomSource, ...rowBottomSource];
 
   const handleSubmitReview = (e: React.FormEvent) => {
     e.preventDefault();
     if (!reviewText.trim()) return;
 
     handleAddReview({
-      name: name.trim() || user?.name || 'Verified Student',
-      role: 'Verified Student',
-      college: college.trim() || user?.college || 'HSC Candidate',
-      avatar: user?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
+      name: name.trim() || user?.name || "Verified Student",
+      role: "Verified Student",
+      college: college.trim() || user?.college || "HSC Candidate",
+      avatar:
+        user?.avatar ||
+        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
       rating,
       reviewText: reviewText.trim(),
       isFeatured: true,
-      status: 'approved',
+      status: "approved",
     });
 
-    setReviewText('');
+    setReviewText("");
     setIsModalOpen(false);
     setSubmittedToast(true);
     setTimeout(() => setSubmittedToast(false), 4000);
   };
+
+  const ReviewCard = ({
+    review,
+    uniqueKey,
+  }: {
+    review: (typeof visibleReviews)[number];
+    uniqueKey: string;
+  }) => (
+    <div
+      key={uniqueKey}
+      className="w-[300px] sm:w-[360px] shrink-0 bg-slate-900/90 border border-slate-800/80 hover:border-blue-500/40 rounded-2xl p-5 flex flex-col justify-between transition-colors duration-300"
+    >
+      <div>
+        {/* Stars and Quote */}
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex text-amber-400">
+            {[...Array(review.rating || 5)].map((_, i) => (
+              <Star
+                key={i}
+                className="w-3.5 h-3.5 fill-amber-400 text-amber-400"
+              />
+            ))}
+          </div>
+          <Quote className="w-6 h-6 text-slate-700 opacity-60" />
+        </div>
+
+        {/* Review Text */}
+        <p className="text-slate-300 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-4 font-normal">
+          {review.reviewText}
+        </p>
+      </div>
+
+      {/* Author Info */}
+      <div className="flex items-center gap-3 pt-3 border-t border-slate-800/60">
+        <img
+          src={
+            review.avatar ||
+            "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80"
+          }
+          alt={review.name}
+          className="w-10 h-10 rounded-full object-cover ring-1 ring-blue-400/30"
+        />
+        <div>
+          <h4 className="text-sm font-bold text-white leading-tight">
+            {review.name}
+          </h4>
+          <div className="flex items-center gap-1.5 mt-0.5">
+            <span className="text-[11px] text-emerald-400 font-medium flex items-center gap-0.5">
+              <ShieldCheck className="w-3 h-3" />
+              {review.role}
+            </span>
+            <span className="text-slate-500 text-[10px]">•</span>
+            <span className="text-[10px] text-slate-400 truncate max-w-[130px]">
+              {review.college}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <section className="py-16 sm:py-24 bg-slate-950 text-white relative overflow-hidden">
       {/* Soft Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+      {/* Marquee keyframes + hover-pause */}
+      <style>{`
+        @keyframes marquee-left {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+        @keyframes marquee-right {
+          from { transform: translateX(-50%); }
+          to { transform: translateX(0); }
+        }
+        .marquee-track {
+          width: max-content;
+          will-change: transform;
+        }
+        .marquee-left {
+          animation: marquee-left 45s linear infinite;
+        }
+        .marquee-right {
+          animation: marquee-right 45s linear infinite;
+        }
+        .marquee-row:hover .marquee-track {
+          animation-play-state: paused;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .marquee-track {
+            animation: none !important;
+          }
+        }
+      `}</style>
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
           <div>
@@ -72,7 +174,8 @@ export default function StudentReviews() {
               What Our Students Say
             </h2>
             <p className="text-slate-400 text-sm leading-relaxed max-w-xl">
-              Real feedback from students who transformed their HSC &amp; Admission journey with Redwan&apos;s Method
+              Real feedback from students who transformed their HSC &amp;
+              Admission journey with Redwan&apos;s Method
             </p>
           </div>
 
@@ -81,11 +184,16 @@ export default function StudentReviews() {
             <div className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-medium">
               <div className="flex items-center text-amber-400">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                  <Star
+                    key={i}
+                    className="w-3.5 h-3.5 fill-amber-400 text-amber-400"
+                  />
                 ))}
               </div>
               <span className="text-amber-300 font-bold ml-1">5.0</span>
-              <span className="text-slate-400">({visibleReviews.length} reviews)</span>
+              <span className="text-slate-400">
+                ({visibleReviews.length} reviews)
+              </span>
             </div>
 
             {/* Write Review Button */}
@@ -105,7 +213,7 @@ export default function StudentReviews() {
 
             {/* View All Reviews Button */}
             <button
-              onClick={() => navigate('/reviews')}
+              onClick={() => navigate("/reviews")}
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white font-bold text-xs transition-colors cursor-pointer"
             >
               <span>View All</span>
@@ -118,83 +226,40 @@ export default function StudentReviews() {
         {submittedToast && (
           <div className="mb-6 p-4 rounded-2xl bg-emerald-950/80 border border-emerald-500/50 text-emerald-300 text-xs sm:text-sm font-semibold flex items-center gap-2 animate-in fade-in duration-200">
             <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span>Thank you for sharing your experience! Your review is now live.</span>
+            <span>
+              Thank you for sharing your experience! Your review is now live.
+            </span>
           </div>
         )}
 
-        {/* Carousel Controls */}
-        <div className="flex justify-end gap-2 mb-4">
-          <button
-            onClick={scrollLeft}
-            className="w-9 h-9 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 flex items-center justify-center transition-colors cursor-pointer"
-            aria-label="Scroll left"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-          <button
-            onClick={scrollRight}
-            className="w-9 h-9 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 flex items-center justify-center transition-colors cursor-pointer"
-            aria-label="Scroll right"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
-
-        {/* Reviews Cards Slider */}
-        <div
-          ref={scrollContainerRef}
-          className="flex gap-4 overflow-x-auto pb-4 pt-1 scroll-smooth snap-x snap-mandatory scrollbar-none"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {visibleReviews.map((review) => (
-            <div
-              key={review.id}
-              className="w-[300px] sm:w-[360px] shrink-0 snap-start bg-slate-900/90 border border-slate-800/80 hover:border-blue-500/40 rounded-2xl p-5 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/5"
-            >
-              <div>
-                {/* Stars and Quote */}
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex text-amber-400">
-                    {[...Array(review.rating || 5)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                    ))}
-                  </div>
-                  <Quote className="w-6 h-6 text-slate-700 opacity-60" />
-                </div>
-
-                {/* Review Text */}
-                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-4 font-normal">
-                  {review.reviewText}
-                </p>
-              </div>
-
-              {/* Author Info */}
-              <div className="flex items-center gap-3 pt-3 border-t border-slate-800/60">
-                <img
-                  src={review.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'}
-                  alt={review.name}
-                  className="w-10 h-10 rounded-full object-cover ring-1 ring-blue-400/30"
+        {/* Two Opposing Marquee Rows */}
+        <div className="space-y-4">
+          {/* Row 1: slides right to left */}
+          <div className="marquee-row relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
+            <div className="marquee-track marquee-left flex gap-4">
+              {rowTop.map((review, idx) => (
+                <ReviewCard
+                  key={`top-${review.id}-${idx}`}
+                  review={review}
+                  uniqueKey={`top-${review.id}-${idx}`}
                 />
-                <div>
-                  <h4 className="text-sm font-bold text-white leading-tight">
-                    {review.name}
-                  </h4>
-                  <div className="flex items-center gap-1.5 mt-0.5">
-                    <span className="text-[11px] text-emerald-400 font-medium flex items-center gap-0.5">
-                      <ShieldCheck className="w-3 h-3" />
-                      {review.role}
-                    </span>
-                    <span className="text-slate-500 text-[10px]">•</span>
-                    <span className="text-[10px] text-slate-400 truncate max-w-[130px]">
-                      {review.college}
-                    </span>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
 
+          {/* Row 2: slides left to right */}
+          <div className="marquee-row relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
+            <div className="marquee-track marquee-right flex gap-4">
+              {rowBottom.map((review, idx) => (
+                <ReviewCard
+                  key={`bottom-${review.id}-${idx}`}
+                  review={review}
+                  uniqueKey={`bottom-${review.id}-${idx}`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Review Giving Modal */}
@@ -203,7 +268,9 @@ export default function StudentReviews() {
           <div className="bg-slate-900 border border-slate-800 text-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 animate-in zoom-in-95 duration-150">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="text-xl font-bold text-white">Write a Student Review</h3>
+                <h3 className="text-xl font-bold text-white">
+                  Write a Student Review
+                </h3>
                 <p className="text-xs text-slate-400 mt-0.5">
                   Share your genuine learning experience with future students.
                 </p>
@@ -231,13 +298,15 @@ export default function StudentReviews() {
                     >
                       <Star
                         className={`w-6 h-6 ${
-                          star <= rating ? 'fill-amber-400 text-amber-400' : 'text-slate-700'
+                          star <= rating
+                            ? "fill-amber-400 text-amber-400"
+                            : "text-slate-700"
                         }`}
                       />
                     </button>
                   ))}
                   <span className="text-xs font-bold text-amber-300 ml-2">
-                    {rating} Star{rating > 1 ? 's' : ''}
+                    {rating} Star{rating > 1 ? "s" : ""}
                   </span>
                 </div>
               </div>

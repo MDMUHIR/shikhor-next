@@ -70,7 +70,7 @@ export default function LearningPaths({ onSelectCategory }: LearningPathsProps) 
 
   return (
     <section className="py-16 sm:py-20 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
