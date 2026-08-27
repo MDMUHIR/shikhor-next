@@ -93,7 +93,7 @@ export default function CourseLearnSpacePage() {
   const progressPercentage = Math.round((completedLessons.length / Math.max(allLessons.length, 1)) * 100);
 
   return (
-    <div className="min-h-screen bg-slate-50 py-6 sm:py-8">
+    <div className="min-h-screen rm-page-bg py-6 sm:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         
         {/* Top Header Bar */}

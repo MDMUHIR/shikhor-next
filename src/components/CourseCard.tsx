@@ -1,5 +1,6 @@
 import { Users, Star, ArrowRight, Sparkles } from 'lucide-react';
 import { Course } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 interface CourseCardProps {
   key?: string;
@@ -10,6 +11,7 @@ interface CourseCardProps {
 
 
 export default function CourseCard({ course, onSelect, onEnroll }: CourseCardProps) {
+  const { t } = useLanguage();
   return (
     <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group hover:border-blue-200">
       
@@ -90,7 +92,7 @@ export default function CourseCard({ course, onSelect, onEnroll }: CourseCardPro
               )}
             </div>
             <span className="text-xs text-slate-600 font-medium">
-              {course.instructors[0]?.name} {course.instructors.length > 1 && `& ${course.instructors.length - 1} more`}
+               {course.instructors[0]?.name} {course.instructors.length > 1 && `& ${course.instructors.length - 1} ${t('more', 'more')}`}
             </span>
           </div>
         </div>
@@ -113,13 +115,13 @@ export default function CourseCard({ course, onSelect, onEnroll }: CourseCardPro
               onClick={() => onSelect(course.id)}
               className="px-3 py-1.5 text-xs font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
             >
-              Details
+              {t('viewDetails')}
             </button>
             <button
               onClick={() => onEnroll(course)}
               className="px-3.5 py-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-2xs transition-all flex items-center gap-1"
             >
-              <span>Enroll</span>
+              <span>{t('enroll', 'Enroll')}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>

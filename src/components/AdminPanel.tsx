@@ -741,7 +741,7 @@ export default function AdminPanel({
   const isAllPageSelected = currentIdsOnPage.length > 0 && currentIdsOnPage.every(id => selectedIds.includes(id));
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen rm-page-bg text-slate-800 flex flex-col antialiased selection:bg-blue-600 selection:text-white">
       
       {/* Toast Notification */}
       {toastMessage && (

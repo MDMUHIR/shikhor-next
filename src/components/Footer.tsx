@@ -1,6 +1,7 @@
 import { Youtube, Facebook, Mail, Phone, MapPin, Award, ShieldCheck, FileText, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Logo from './Logo';
+import { useLanguage } from '../context/LanguageContext';
 
 interface FooterProps {
   onNavigate?: (view: string) => void;
@@ -8,6 +9,7 @@ interface FooterProps {
 
 export default function Footer({ onNavigate }: FooterProps) {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const handleLinkClick = (view: string) => {
     if (onNavigate) {
@@ -80,7 +82,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                   className="flex cursor-pointer items-center gap-1.5 transition-colors hover:text-blue-600"
                 >
                   <ArrowRight className="h-3.5 w-3.5 text-slate-400" />
-                  Home
+                   {t('home')}
                 </button>
               </li>
               <li>
@@ -89,7 +91,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                   className="flex cursor-pointer items-center gap-1.5 transition-colors hover:text-blue-600"
                 >
                   <ArrowRight className="h-3.5 w-3.5 text-slate-400" />
-                  All Courses
+                   {t('allCourses')}
                 </button>
               </li>
               <li>
@@ -98,7 +100,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                   className="flex cursor-pointer items-center gap-1.5 transition-colors hover:text-blue-600"
                 >
                   <ArrowRight className="h-3.5 w-3.5 text-slate-400" />
-                  Instructors
+                   {t('instructors')}
                 </button>
               </li>
               <li>
@@ -107,7 +109,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                   className="flex cursor-pointer items-center gap-1.5 transition-colors hover:text-blue-600"
                 >
                   <ArrowRight className="h-3.5 w-3.5 text-slate-400" />
-                  Exams Routine
+                   {t('examsRoutine')}
                 </button>
               </li>
               <li>
@@ -116,7 +118,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                   className="flex cursor-pointer items-center gap-1.5 transition-colors hover:text-blue-600"
                 >
                   <ArrowRight className="h-3.5 w-3.5 text-slate-400" />
-                  Board Result
+                   {t('boardResult')}
                 </button>
               </li>
               <li>
@@ -125,7 +127,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                   className="flex cursor-pointer items-center gap-1.5 transition-colors hover:text-blue-600"
                 >
                   <ArrowRight className="h-3.5 w-3.5 text-slate-400" />
-                  Store: E-Books &amp; Notes
+                  {t('storeNotes')}
                 </button>
               </li>
             </ul>

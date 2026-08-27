@@ -13,13 +13,15 @@ import {
   Users,
   BookCheck,
 } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function HomePage() {
   const navigate = useNavigate();
   const { courses, handleEnrollClick } = useApp();
+  const { t } = useLanguage();
 
   return (
-    <div className="space-y-0 ">
+    <div className="rm-page-bg space-y-0">
       {/* Hero with Interactive Carousel & Live Stats */}
       <HomeHero
         onSelectCourse={(courseId) => {
@@ -99,10 +101,10 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div>
             <h3 className="text-lg font-bold text-white">
-              Have questions about course curriculum or enrollment?
+              {t("questionsEnrollment")}
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">
-              Our student counselor team is available 10:00 AM - 10:00 PM daily.
+              {t("counselorAvailability")}
             </p>
           </div>
 
@@ -112,7 +114,7 @@ export default function HomePage() {
               className="px-6 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 font-bold text-xs sm:text-sm text-white flex items-center gap-2 shadow-lg transition-colors"
             >
               <PhoneCall className="w-4 h-4" />
-              <span>Call 09617331133</span>
+              <span>{t("call")} 09617331133</span>
             </a>
           </div>
         </div>

@@ -14,7 +14,7 @@ export default function ProfilePage() {
 
   if (!user) {
     return (
-      <div className="min-h-[70vh] flex items-center justify-center px-4">
+      <div className="min-h-[70vh] rm-page-bg flex items-center justify-center px-4">
         <div className="max-w-md w-full bg-white rounded-3xl border border-slate-200 p-8 text-center shadow-lg space-y-4">
           <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto">
             <User className="w-8 h-8" />

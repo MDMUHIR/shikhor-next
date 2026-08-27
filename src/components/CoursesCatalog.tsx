@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Search, Filter, Sparkles, BookOpen, Layers } from 'lucide-react';
 import { Course } from '../types';
 import CourseCard from './CourseCard';
+import { useLanguage } from '../context/LanguageContext';
 
 interface CoursesCatalogProps {
   courses: Course[];
@@ -16,6 +17,7 @@ export default function CoursesCatalog({
   onSelectCourse,
   onEnrollCourse,
 }: CoursesCatalogProps) {
+  const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'popular' | 'priceLow' | 'priceHigh' | 'rating'>('popular');
@@ -57,7 +59,7 @@ export default function CoursesCatalog({
     });
 
   return (
-    <div className="min-h-screen bg-slate-50/80 py-6 sm:py-10">
+    <div className="min-h-screen rm-page-bg py-6 sm:py-10">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Catalog Header */}
         <section className="relative isolate mb-8 overflow-hidden rounded-[2rem] bg-[#071e22] px-6 py-8 text-white shadow-xl shadow-slate-900/10 sm:px-10 sm:py-10 lg:px-12 lg:py-12">
@@ -67,28 +69,28 @@ export default function CoursesCatalog({
             <div className="max-w-2xl">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-300/20 bg-blue-400/10 px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.16em] text-blue-200">
                 <Sparkles className="h-3.5 w-3.5 text-amber-300" />
-                Academic &amp; admission programs
+                {t('academicPrograms')}
               </div>
               <h1 className="text-3xl font-black leading-[1.08] tracking-tight sm:text-4xl lg:text-5xl">
-                Find the class that moves you forward.
+                {t('catalogTitle')}
               </h1>
               <p className="mt-4 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
-                Focused courses, trusted mentors, and a clear path from your next chapter to your biggest academic goal.
+                {t('catalogDescription')}
               </p>
             </div>
 
             <div className="grid grid-cols-3 gap-2 sm:gap-3 lg:min-w-[320px]">
               <div className="rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm sm:p-4">
                 <p className="text-xl font-black sm:text-2xl">{courses.length}</p>
-                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">Programs</p>
+                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">{t('courses')}</p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm sm:p-4">
                 <p className="text-xl font-black sm:text-2xl">{categories.length - 1}</p>
-                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">Study paths</p>
+                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">{t('subjectTracks')}</p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm sm:p-4">
                 <p className="text-xl font-black sm:text-2xl">5.0</p>
-                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">Top rating</p>
+                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">{t('avgRating')}</p>
               </div>
             </div>
           </div>
@@ -103,9 +105,9 @@ export default function CoursesCatalog({
                   <Layers className="h-4 w-4" />
                 </div>
                 <div>
-                  <p className="text-sm font-black text-slate-900">Browse by study path</p>
+                  <p className="text-sm font-black text-slate-900">{t('browseStudyPath')}</p>
                   <p className="text-xs font-medium text-slate-500">
-                    {filteredCourses.length} {filteredCourses.length === 1 ? 'course' : 'courses'} available
+                    {filteredCourses.length} {t('coursesAvailable')}
                   </p>
                 </div>
               </div>
@@ -117,24 +119,24 @@ export default function CoursesCatalog({
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search courses or teachers..."
+                    placeholder={t('searchCoursesTeachers')}
                     aria-label="Search courses or teachers"
                     className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-xs font-medium text-slate-800 outline-none transition focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-500/10 sm:text-sm"
                   />
                 </div>
                 <label className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs font-bold text-slate-500">
                   <Filter className="h-3.5 w-3.5 text-blue-600" />
-                  <span className="whitespace-nowrap">Sort by</span>
+                  <span className="whitespace-nowrap">{t('sortBy', 'Sort by')}</span>
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as any)}
                     aria-label="Sort courses"
                     className="min-w-28 bg-transparent text-xs font-black text-slate-800 outline-none"
                   >
-                    <option value="popular">Popular</option>
-                    <option value="rating">Rating</option>
-                    <option value="priceLow">Price: Low</option>
-                    <option value="priceHigh">Price: High</option>
+                    <option value="popular">{t('popular', 'Popular')}</option>
+                    <option value="rating">{t('rating', 'Rating')}</option>
+                    <option value="priceLow">{t('priceLow', 'Price: Low')}</option>
+                    <option value="priceHigh">{t('priceHigh', 'Price: High')}</option>
                   </select>
                 </label>
               </div>
@@ -162,11 +164,11 @@ export default function CoursesCatalog({
 
         <div className="mb-4 flex items-center justify-between gap-3">
           <div>
-            <p className="text-[11px] font-black uppercase tracking-[0.16em] text-blue-600">Curated for your goals</p>
-            <h2 className="mt-1 text-xl font-black tracking-tight text-slate-900 sm:text-2xl">Choose your next course</h2>
+            <p className="text-[11px] font-black uppercase tracking-[0.16em] text-blue-600">{t('curatedGoals')}</p>
+            <h2 className="mt-1 text-xl font-black tracking-tight text-slate-900 sm:text-2xl">{t('chooseNextCourse')}</h2>
           </div>
           <span className="hidden rounded-full bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-500 sm:inline-flex">
-            {filteredCourses.length} results
+            {filteredCourses.length} {t('results', 'results')}
           </span>
         </div>
 
@@ -174,8 +176,8 @@ export default function CoursesCatalog({
         {filteredCourses.length === 0 ? (
           <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center max-w-md mx-auto">
             <BookOpen className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-            <h3 className="text-base font-bold text-slate-800">No courses match your filter</h3>
-            <p className="text-xs text-slate-500 mt-1 mb-4">Try selecting a different category or search term.</p>
+            <h3 className="text-base font-bold text-slate-800">{t('noCourses', 'No courses match your filter')}</h3>
+            <p className="text-xs text-slate-500 mt-1 mb-4">{t('tryAnother', 'Try selecting a different category or search term.')}</p>
             <button
               onClick={() => {
                 setSelectedCategory('All');
@@ -183,7 +185,7 @@ export default function CoursesCatalog({
               }}
               className="px-4 py-2 text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl"
             >
-              Reset Filters
+              {t('resetFilters', 'Reset filters')}
             </button>
           </div>
         ) : (

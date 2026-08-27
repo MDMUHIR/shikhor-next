@@ -66,7 +66,7 @@ export default function ReviewsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/70 py-10 sm:py-16 font-sans">
+    <div className="min-h-screen rm-page-bg py-10 sm:py-16 font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         
         {/* Top Hero Section */}

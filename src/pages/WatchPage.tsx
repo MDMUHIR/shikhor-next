@@ -146,7 +146,7 @@ export default function WatchPage() {
   const lectureTitleBangla = `লেকচার ০${currentLectureNum}`;
 
   return (
-    <div className="min-h-screen bg-[#f3f4f9] py-6 sm:py-8 px-3 sm:px-6 lg:px-10 font-sans">
+    <div className="min-h-screen rm-page-bg py-6 sm:py-8 px-3 sm:px-6 lg:px-10 font-sans">
       <div className="max-w-[1580px] mx-auto space-y-6">
 
         {/* 1. Top Chapter Title Header Card */}

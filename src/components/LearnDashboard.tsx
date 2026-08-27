@@ -1,5 +1,6 @@
 import { BookOpen, LayoutGrid, ClipboardList, User, Play, FileText, ArrowRight, CheckCircle2, Clock, ChevronRight, Sparkles } from 'lucide-react';
 import { Course, UserProfile } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 interface LearnDashboardProps {
   user: UserProfile | null;
@@ -20,13 +21,14 @@ export default function LearnDashboard({
   onSelectCourse,
   onOpenLiveClass,
 }: LearnDashboardProps) {
+  const { t } = useLanguage();
   const hasEnrollments = enrolledCourses.length > 0;
   const learnerName = user?.name?.split(' ')[0] || 'Learner';
   const subjectTracks = enrolledCourses.reduce((total, course) => total + course.syllabus.length, 0);
   const examsAttempted = user?.examHistory?.length || 0;
 
   return (
-    <div className="min-h-screen bg-slate-50/80 py-6 sm:py-10">
+    <div className="min-h-screen rm-page-bg py-6 sm:py-10">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Learning space header */}
         <section className="relative isolate mb-8 overflow-hidden rounded-[2rem] bg-[#071e22] px-6 py-8 text-white shadow-xl shadow-slate-900/10 sm:px-10 sm:py-10 lg:px-12 lg:py-11">
@@ -36,28 +38,28 @@ export default function LearnDashboard({
             <div className="max-w-2xl">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-300/20 bg-blue-400/10 px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.16em] text-blue-200">
                 <Sparkles className="h-3.5 w-3.5 text-amber-300" />
-                Your learning space
+                {t('yourLearningSpace')}
               </div>
               <h1 className="text-3xl font-black leading-[1.08] tracking-tight sm:text-4xl lg:text-5xl">
-                Keep going, {learnerName}.
+                {t('keepGoing')}, {learnerName}.
               </h1>
               <p className="mt-4 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
-                Pick up where you left off, join your next class, or test what you know.
+                {t('learningDescription')}
               </p>
             </div>
 
             <div className="grid grid-cols-3 gap-2 sm:gap-3 lg:min-w-[350px]">
               <div className="rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm sm:p-4">
                 <p className="text-xl font-black sm:text-2xl">{enrolledCourses.length}</p>
-                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">Active programs</p>
+                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">{t('activePrograms')}</p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm sm:p-4">
                 <p className="text-xl font-black sm:text-2xl">{subjectTracks}</p>
-                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">Subject tracks</p>
+                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">{t('subjectTracks')}</p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm sm:p-4">
                 <p className="text-xl font-black sm:text-2xl">{examsAttempted}</p>
-                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">Exams taken</p>
+                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">{t('examsTaken')}</p>
               </div>
             </div>
           </div>
@@ -74,8 +76,8 @@ export default function LearnDashboard({
                 <LayoutGrid className="h-5 w-5" />
               </span>
               <span>
-                <span className="block text-sm font-black text-slate-900">Browse courses</span>
-                <span className="mt-1 block text-xs font-medium text-slate-500">Discover new programs</span>
+                <span className="block text-sm font-black text-slate-900">{t('browseCourses')}</span>
+                <span className="mt-1 block text-xs font-medium text-slate-500">{t('discoverPrograms')}</span>
               </span>
             </span>
             <ChevronRight className="h-4 w-4 text-slate-300 transition group-hover:translate-x-1 group-hover:text-blue-600" />
@@ -90,8 +92,8 @@ export default function LearnDashboard({
                 <ClipboardList className="h-5 w-5" />
               </span>
               <span>
-                <span className="block text-sm font-black text-slate-900">All exams</span>
-                <span className="mt-1 block text-xs font-medium text-slate-500">Practice and track results</span>
+                <span className="block text-sm font-black text-slate-900">{t('allExams')}</span>
+                <span className="mt-1 block text-xs font-medium text-slate-500">{t('practiceResults')}</span>
               </span>
             </span>
             <ChevronRight className="h-4 w-4 text-slate-300 transition group-hover:translate-x-1 group-hover:text-sky-600" />
@@ -106,8 +108,8 @@ export default function LearnDashboard({
                 <User className="h-5 w-5" />
               </span>
               <span>
-                <span className="block text-sm font-black text-slate-900">Your profile</span>
-                <span className="mt-1 block text-xs font-medium text-slate-500">Account and enrollments</span>
+                <span className="block text-sm font-black text-slate-900">{t('profile')}</span>
+                <span className="mt-1 block text-xs font-medium text-slate-500">{t('accountEnrollments')}</span>
               </span>
             </span>
             <ChevronRight className="h-4 w-4 text-slate-300 transition group-hover:translate-x-1 group-hover:text-indigo-600" />
@@ -124,17 +126,17 @@ export default function LearnDashboard({
             </div>
 
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2">
-              No enrolled courses yet
+              {t('noEnrolledCourses')}
             </h2>
             <p className="text-slate-500 text-xs sm:text-sm max-w-sm mb-8 font-normal leading-relaxed">
-              Your classroom is ready when you are. Enroll in a program to access live classes, notes, and practice exams.
+              {t('classroomReady')}
             </p>
 
             <button
               onClick={onNavigateCourses}
               className="px-8 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md hover:shadow-blue-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
             >
-              Explore Courses
+              {t('exploreCourses')}
               <ArrowRight className="ml-2 inline h-4 w-4" />
             </button>
           </div>
@@ -143,14 +145,14 @@ export default function LearnDashboard({
           <div className="space-y-6">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-[11px] font-black uppercase tracking-[0.16em] text-blue-600">Your classroom</p>
+                <p className="text-[11px] font-black uppercase tracking-[0.16em] text-blue-600">{t('yourClassroom')}</p>
                 <h2 className="mt-1 text-xl font-black tracking-tight text-slate-900 sm:text-2xl">
-                  Continue learning
+                  {t('continueLearning')}
                 </h2>
               </div>
               <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700">
                 <CheckCircle2 className="h-3.5 w-3.5" />
-                24/7 unlimited access
+                {t('unlimitedAccess')}
               </span>
             </div>
 
@@ -182,7 +184,7 @@ export default function LearnDashboard({
                     {/* Progress Bar */}
                     <div className="mb-5 mt-5 space-y-2">
                       <div className="flex justify-between text-xs font-bold text-slate-500">
-                        <span>Course progress</span>
+                        <span>{t('courseProgress')}</span>
                         <span className="text-blue-600">32% complete</span>
                       </div>
                       <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
@@ -209,21 +211,21 @@ export default function LearnDashboard({
                       onClick={() => onSelectCourse(course.id)}
                       className="inline-flex items-center gap-1 text-xs font-bold text-slate-600 transition hover:text-blue-600 cursor-pointer"
                     >
-                      View syllabus <ArrowRight className="h-3.5 w-3.5" />
+                      {t('syllabus')} <ArrowRight className="h-3.5 w-3.5" />
                     </button>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={onNavigateExams}
                         className="rounded-xl border border-purple-200 bg-white px-3 py-2 text-xs font-bold text-purple-700 transition hover:bg-purple-50 cursor-pointer"
                       >
-                        Exams
+                        {t('exams')}
                       </button>
                       <button
                         onClick={() => onOpenLiveClass(course)}
                         className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-blue-700 hover:shadow-blue-600/20 cursor-pointer"
                       >
                         <Play className="h-3.5 w-3.5 fill-current" />
-                        <span>Enter class</span>
+                        <span>{t('enterClass')}</span>
                       </button>
                     </div>
                   </div>

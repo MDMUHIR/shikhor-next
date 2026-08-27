@@ -5,6 +5,7 @@ import { AppProvider, useApp } from './context/AppContext';
 // Layout Components
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import PageTransition from './components/PageTransition';
 
 // Pages
 import HomePage from './pages/HomePage';
@@ -88,7 +89,8 @@ function AppContent() {
 
       {/* Dynamic Multi-Page Routes */}
       <main className="flex-1">
-        <Routes>
+        <PageTransition key={location.pathname}>
+          <Routes>
           {/* 1. Home Page */}
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<HomePage />} />
@@ -145,7 +147,8 @@ function AppContent() {
 
           {/* 12. 404 Fallback */}
           <Route path="*" element={<NotFoundPage />} />
-        </Routes>
+          </Routes>
+        </PageTransition>
       </main>
 
       {/* Global Footer */}

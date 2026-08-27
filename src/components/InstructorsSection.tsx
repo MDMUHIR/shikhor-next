@@ -1,18 +1,20 @@
 import { Users, Award, BookOpen, ArrowRight, Sparkles, Clock, Facebook, Youtube, Instagram } from 'lucide-react';
 import { INSTRUCTORS } from '../data/coursesData';
 import { Instructor } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 interface InstructorsSectionProps {
   onSelectInstructorCourses: (instructorName: string) => void;
 }
 
 export default function InstructorsSection({ onSelectInstructorCourses }: InstructorsSectionProps) {
+  const { t } = useLanguage();
   const totalStudents = INSTRUCTORS.reduce((total, instructor) => total + instructor.studentsCount, 0);
   const totalPrograms = INSTRUCTORS.reduce((total, instructor) => total + instructor.coursesCount, 0);
   const subjectCount = new Set(INSTRUCTORS.map((instructor) => instructor.subject)).size;
 
   return (
-    <div className="min-h-screen bg-slate-50/80 py-6 sm:py-10">
+    <div className="min-h-screen rm-page-bg py-6 sm:py-10">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Faculty Header */}
         <section className="relative isolate mb-8 overflow-hidden rounded-[2rem] bg-[#071e22] px-6 py-8 text-white shadow-xl shadow-slate-900/10 sm:px-10 sm:py-10 lg:px-12 lg:py-12">
@@ -22,28 +24,28 @@ export default function InstructorsSection({ onSelectInstructorCourses }: Instru
             <div className="max-w-2xl">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-300/20 bg-blue-400/10 px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.16em] text-blue-200">
                 <Sparkles className="h-3.5 w-3.5 text-amber-300" />
-                The people behind the progress
+                {t('facultyEyebrow')}
               </div>
               <h1 className="text-3xl font-black leading-[1.08] tracking-tight sm:text-4xl lg:text-5xl">
-                Learn from mentors who make hard things click.
+                {t('facultyTitle')}
               </h1>
               <p className="mt-4 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
-                Meet the educators helping students build durable concepts, sharper problem-solving skills, and confidence for what comes next.
+                {t('facultyDescription')}
               </p>
             </div>
 
             <div className="grid grid-cols-3 gap-2 sm:gap-3 lg:min-w-[350px]">
               <div className="rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm sm:p-4">
                 <p className="text-xl font-black sm:text-2xl">{INSTRUCTORS.length}</p>
-                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">Expert mentors</p>
+                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">{t('expertMentors')}</p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm sm:p-4">
                 <p className="text-xl font-black sm:text-2xl">{subjectCount}</p>
-                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">Subject areas</p>
+                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">{t('subjectAreas')}</p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm sm:p-4">
                 <p className="text-xl font-black sm:text-2xl">{Math.round(totalStudents / 1000)}k+</p>
-                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">Learners reached</p>
+                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">{t('learnersReached')}</p>
               </div>
             </div>
           </div>
@@ -51,12 +53,12 @@ export default function InstructorsSection({ onSelectInstructorCourses }: Instru
 
         <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-[11px] font-black uppercase tracking-[0.16em] text-blue-600">Find your guide</p>
-            <h2 className="mt-1 text-xl font-black tracking-tight text-slate-900 sm:text-2xl">Our teaching faculty</h2>
+            <p className="text-[11px] font-black uppercase tracking-[0.16em] text-blue-600">{t('findYourGuide')}</p>
+            <h2 className="mt-1 text-xl font-black tracking-tight text-slate-900 sm:text-2xl">{t('teachingFaculty')}</h2>
           </div>
           <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-bold text-blue-700">
             <BookOpen className="h-3.5 w-3.5" />
-            {totalPrograms} programs across the faculty
+            {totalPrograms} {t('programsAcrossFaculty')}
           </span>
         </div>
 
@@ -138,7 +140,7 @@ export default function InstructorsSection({ onSelectInstructorCourses }: Instru
                   onClick={() => onSelectInstructorCourses(instructor.name)}
                   className="mt-auto flex w-full items-center justify-center gap-1.5 rounded-xl bg-slate-900 py-3 text-xs font-bold text-white transition-all hover:bg-blue-600 group/btn cursor-pointer"
                 >
-                  <span>Explore {instructor.coursesCount} programs</span>
+                    <span>{t('explore')} {instructor.coursesCount} {t('programsAcrossFaculty')}</span>
                   <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/btn:translate-x-1" />
                 </button>
               </div>

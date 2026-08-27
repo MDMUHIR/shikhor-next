@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { Course, Instructor, StudentReview } from "../types";
 import { useApp } from "../context/AppContext";
+import { useLanguage } from "../context/LanguageContext";
 
 interface CourseDetailProps {
   course: Course;
@@ -43,6 +44,7 @@ export default function CourseDetail({
 }: CourseDetailProps) {
   const navigate = useNavigate();
   const { reviews, handleAddReview, user, setIsAuthOpen } = useApp();
+  const { t } = useLanguage();
 
   const [activeTab, setActiveTab] = useState<"overview" | "demo" | "reviews">(
     "overview",
@@ -138,7 +140,7 @@ export default function CourseDetail({
           className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors mb-6 group cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-          <span>Back to Courses</span>
+          <span>{t("courses")}</span>
         </button>
 
         {/* Course Hero with the details video above the fold */}
@@ -199,7 +201,7 @@ export default function CourseDetail({
                 className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-black text-[#0d2f35] shadow-lg transition hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
               >
                 <PlayCircle className="h-4 w-4 fill-blue-600 text-blue-600" />
-                Explore demo classes
+                {t("explore")} demo classes
               </button>
             </div>
           </div>
@@ -222,7 +224,7 @@ export default function CourseDetail({
                   }`}
                 >
                   <BookOpen className="w-4 h-4" />
-                  <span>Overview</span>
+                  <span>{t("overview", "Overview")}</span>
                 </button>
                 <button
                   onClick={() => setActiveTab("demo")}
@@ -233,7 +235,7 @@ export default function CourseDetail({
                   }`}
                 >
                   <PlayCircle className="w-4 h-4" />
-                  <span>Demo Class</span>
+                  <span>{t("demoClass", "Demo Class")}</span>
                 </button>
                 <button
                   onClick={() => setActiveTab("reviews")}
@@ -244,7 +246,7 @@ export default function CourseDetail({
                   }`}
                 >
                   <Star className="w-4 h-4" />
-                  <span>Reviews ({courseReviews.length})</span>
+                  <span>{t("reviews", "Reviews")} ({courseReviews.length})</span>
                 </button>
               </div>
 
@@ -254,7 +256,7 @@ export default function CourseDetail({
                   {/* Combo Instructors Row */}
                   <div>
                     <h3 className="text-base sm:text-lg font-extrabold text-slate-950 mb-4 tracking-tight">
-                      Combo Instructors
+                      {t("comboInstructors", "Combo Instructors")}
                     </h3>
                     <div className="flex items-start gap-4 overflow-x-auto pb-3 scrollbar-none">
                       {course.instructors.map((inst) => (
@@ -281,7 +283,7 @@ export default function CourseDetail({
                   {/* Combo Description */}
                   <div>
                     <h3 className="text-base sm:text-lg font-extrabold text-slate-950 mb-3 tracking-tight">
-                      Combo Description
+                      {t("comboDescription", "Combo Description")}
                     </h3>
                     <div className="text-slate-700 text-sm sm:text-base leading-relaxed whitespace-pre-line space-y-3 font-normal">
                       {showFullDesc ? (
@@ -306,7 +308,7 @@ export default function CourseDetail({
                   {/* Key Features Bullet Points */}
                   <div>
                     <h3 className="text-base sm:text-lg font-extrabold text-slate-950 mb-4 tracking-tight">
-                      Course Features &amp; Offerings
+                      {t("courseFeatures", "Course Features & Offerings")}
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {course.features.map((feature, idx) => (
@@ -326,7 +328,7 @@ export default function CourseDetail({
                   {/* Syllabus Breakdown */}
                   <div>
                     <h3 className="text-base sm:text-lg font-extrabold text-slate-950 mb-4 tracking-tight">
-                      Detailed Syllabus Breakdown
+                      {t("detailedSyllabus", "Detailed Syllabus Breakdown")}
                     </h3>
                     <div className="space-y-3">
                       {course.syllabus.map((s, idx) => (
@@ -361,11 +363,10 @@ export default function CourseDetail({
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                       <div>
                         <h3 className="text-lg font-bold text-slate-900">
-                          Free Interactive Demo Classes
+                          {t("freeDemoClasses", "Free Interactive Demo Classes")}
                         </h3>
                         <p className="text-xs sm:text-sm text-slate-600">
-                          Watch our sample masterclasses to experience our
-                          teaching methodology before enrolling.
+                          {t("demoDescription", "Watch our sample masterclasses to experience our teaching methodology before enrolling.")}
                         </p>
                       </div>
                       <button
@@ -375,7 +376,7 @@ export default function CourseDetail({
                         className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs transition-colors cursor-pointer"
                       >
                         <Tv className="w-3.5 h-3.5" />
-                        <span>Open in Video Player</span>
+                        <span>{t("openVideoPlayer", "Open in Video Player")}</span>
                       </button>
                     </div>
 
@@ -395,7 +396,7 @@ export default function CourseDetail({
                     {/* Demo Class Playlist */}
                     <div className="space-y-3">
                       <h4 className="text-sm font-bold text-slate-900">
-                        Available Sample Lectures
+                        {t("sampleLectures", "Available Sample Lectures")}
                       </h4>
                       {course.demoVideos.map((video) => (
                         <div
@@ -489,8 +490,8 @@ export default function CourseDetail({
                       <MessageSquare className="w-4 h-4" />
                       <span>
                         {showReviewForm
-                          ? "Cancel Review"
-                          : "Write a Student Review"}
+                          ? t("cancel")
+                          : t("writeReview")}
                       </span>
                     </button>
                   </div>
@@ -595,7 +596,7 @@ export default function CourseDetail({
                           className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs cursor-pointer flex items-center gap-1.5"
                         >
                           <Send className="w-3.5 h-3.5" />
-                          <span>Publish Review</span>
+                          <span>{t("publishReview")}</span>
                         </button>
                       </div>
                     </form>

@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import { getActiveHeroSlides } from "../data/heroSlides";
+import { useLanguage } from "../context/LanguageContext";
 
 interface HomeHeroProps {
   onSelectCourse: (courseId: string) => void;
@@ -39,22 +40,22 @@ const courses = [
 const stats = [
   {
     value: "282,913",
-    label: "Students",
+    label: "students",
     icon: Users,
   },
   {
     value: "66",
-    label: "Courses",
+    label: "courses",
     icon: PlaySquare,
   },
   {
     value: "28",
-    label: "Teachers",
+    label: "teachers",
     icon: GraduationCap,
   },
   {
     value: "5,062",
-    label: "Videos",
+    label: "videos",
     icon: Video,
   },
 ];
@@ -63,6 +64,7 @@ export default function HomeHero({
   onSelectCourse,
   onNavigateCourses,
 }: HomeHeroProps) {
+  const { t } = useLanguage();
   const slideContent = getActiveHeroSlides();
 
   const [activeSlide, setActiveSlide] = useState(0);
@@ -275,14 +277,14 @@ export default function HomeHero({
           <div className="bg-gradient-to-br from-emerald-900/50 via-teal-900/50 to-cyan-900/50 backdrop-blur-lg rounded-2xl p-6 md:p-8 border border-emerald-500/20 flex flex-col">
             <div className="flex items-center justify-between mb-6">
               <span className="bg-emerald-500/20 text-emerald-300 px-4 py-2 rounded-full text-sm font-medium">
-                Online Course
+                 {t("onlineCourse")}
               </span>
             </div>
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
-              Online Batches are ongoing!
+               {t("batchesOngoing")}
             </h2>
             <h3 className="text-xl md:text-2xl text-emerald-300 mb-6">
-              Book your seat now!
+               {t("bookSeat")}
             </h3>
 
             <div className="grid grid-cols-1 gap-4 mb-6 flex-grow">
@@ -316,7 +318,7 @@ export default function HomeHero({
               onClick={onNavigateCourses}
               className="flex items-center text-emerald-400 hover:text-emerald-300 font-medium group transition-colors text-sm md:text-base mt-auto"
             >
-              <span>See All Courses</span>
+               <span>{t("seeAllCourses")}</span>
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform w-4 h-4" />
             </button>
           </div>
@@ -325,14 +327,14 @@ export default function HomeHero({
           <div className="bg-gradient-to-br from-cyan-900/50 via-sky-900/50 to-blue-900/50 backdrop-blur-lg rounded-2xl p-6 md:p-8 border border-cyan-500/20 flex flex-col">
             <div className="flex items-center justify-between mb-6">
               <span className="bg-cyan-500/20 text-cyan-300 px-4 py-2 rounded-full text-sm font-medium">
-                Online Course
+                 {t("onlineCourse")}
               </span>
             </div>
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
-              See the stats!
+               {t("seeStats")}
             </h2>
             <h3 className="text-xl md:text-2xl text-cyan-300 mb-6">
-              The trust we are building!
+               {t("trustBuilding")}
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 flex-grow">
@@ -352,7 +354,7 @@ export default function HomeHero({
                         {stat.value}
                       </h4>
                       <p className="text-slate-400 text-sm md:text-base">
-                        {stat.label}
+                         {t(stat.label)}
                       </p>
                     </div>
                   </div>
@@ -365,7 +367,7 @@ export default function HomeHero({
               onClick={onNavigateCourses}
               className="flex items-center text-cyan-400 hover:text-cyan-300 font-medium group transition-colors text-sm md:text-base mt-auto"
             >
-              <span>See All Courses</span>
+               <span>{t("seeAllCourses")}</span>
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform w-4 h-4" />
             </button>
           </div>

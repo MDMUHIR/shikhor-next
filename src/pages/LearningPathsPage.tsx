@@ -6,7 +6,7 @@ export default function LearningPathsPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="py-8">
+    <div className="rm-page-bg py-8">
       <LearningPaths
         onSelectCategory={(cat) => {
           navigate(`/courses?category=${encodeURIComponent(cat)}`);

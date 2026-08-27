@@ -1,10 +1,12 @@
 import { GraduationCap, BookOpen, Calculator, Atom, Code2, Users, ChevronRight } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface LearningPathsProps {
   onSelectCategory: (category: string) => void;
 }
 
 export default function LearningPaths({ onSelectCategory }: LearningPathsProps) {
+  const { t } = useLanguage();
   const paths = [
     {
       id: 'academic',
@@ -76,11 +78,11 @@ export default function LearningPaths({ onSelectCategory }: LearningPathsProps) 
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 mb-4">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-sky-500 to-indigo-600">
-              Choose Your Learning Path
+              {t('chooseLearningPath', 'Choose Your Learning Path')}
             </span>
           </h2>
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-            Discover diverse courses across multiple disciplines designed to help you excel in your academic and admission journey.
+            {t('learningPathDescription', 'Discover diverse courses across multiple disciplines designed to help you excel in your academic and admission journey.')}
           </p>
         </div>
 
@@ -111,7 +113,7 @@ export default function LearningPaths({ onSelectCategory }: LearningPathsProps) 
 
                 {/* Explore Link */}
                 <div className={`inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold ${path.textColor} group-hover:underline`}>
-                  <span>Explore</span>
+                  <span>{t('explore')}</span>
                   <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </div>
               </div>

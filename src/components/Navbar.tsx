@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import Logo from "./Logo";
 import { UserProfile } from "../types";
+import { useLanguage } from "../context/LanguageContext";
 
 interface NavbarProps {
   currentView?: string;
@@ -52,6 +53,7 @@ export default function Navbar({
 }: NavbarProps) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { language, toggleLanguage, t } = useLanguage();
   const pathname = location.pathname;
 
   const getActiveTab = () => {
@@ -101,20 +103,20 @@ export default function Navbar({
   }, []);
 
   const navItems = [
-    { id: "home", label: "Home", path: "/" },
-    { id: "courses", label: "Courses", path: "/courses" },
+    { id: "home", label: t("home"), path: "/" },
+    { id: "courses", label: t("courses"), path: "/courses" },
     {
       id: "learn",
-      label: "Learn",
+      label: t("learn"),
       path: "/learn",
       badge: user?.enrolledCourseIds?.length
         ? `${user.enrolledCourseIds.length}`
         : undefined,
     },
-    { id: "instructors", label: "Instructors", path: "/instructors" },
-    { id: "exams", label: "Exams", path: "/exams" },
-    { id: "store", label: "Store", path: "/store" },
-    { id: "result", label: "Result", path: "/result" },
+    { id: "instructors", label: t("instructors"), path: "/instructors" },
+    { id: "exams", label: t("exams"), path: "/exams" },
+    { id: "store", label: t("store"), path: "/store" },
+    { id: "result", label: t("result"), path: "/result" },
   ];
 
   const handleNavClick = (viewId: string, path?: string) => {
@@ -212,13 +214,21 @@ export default function Navbar({
               }`}
             >
               <Shield className="w-3.5 h-3.5" strokeWidth={2.5} />
-              <span>Admin</span>
+               <span>{t("admin")}</span>
             </button>
           )}
         </nav>
 
         {/* Right: User / Auth action */}
         <div className="hidden sm:flex items-center gap-3 shrink-0">
+          <button
+            onClick={toggleLanguage}
+            className="rounded-full border border-[#E7EAF0] bg-white px-3 py-2 text-[11px] font-black text-[#001d5f] transition-colors hover:bg-[#F7F8FA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A227]"
+            aria-label={t("switchLanguage")}
+            title={t("switchLanguage")}
+          >
+            {language === "en" ? "বাংলা" : "EN"}
+          </button>
           {user ? (
             <div className="relative" ref={dropdownRef}>
               <button
@@ -290,7 +300,7 @@ export default function Navbar({
                       <span className="w-7 h-7 rounded-lg bg-[#EEF1F7] flex items-center justify-center">
                         <User className="w-4 h-4 text-[#001d5f]" />
                       </span>
-                      <span>My Profile &amp; Academic Details</span>
+                       <span>{t("profile")}</span>
                     </button>
 
                     <button
@@ -304,7 +314,7 @@ export default function Navbar({
                         <BookOpen className="w-4 h-4 text-[#001d5f]" />
                       </span>
                       <span>
-                        Enrolled Courses ({user.enrolledCourseIds?.length || 0})
+                         {t("enrolledCourses")} ({user.enrolledCourseIds?.length || 0})
                       </span>
                     </button>
 
@@ -318,7 +328,7 @@ export default function Navbar({
                       <span className="w-7 h-7 rounded-lg bg-[#FBF6E7] flex items-center justify-center">
                         <Award className="w-4 h-4 text-[#8A6D10]" />
                       </span>
-                      <span>Exam Results &amp; Analytics</span>
+                       <span>{t("examAnalytics")}</span>
                     </button>
 
                     {user.role === "admin" && (
@@ -332,7 +342,7 @@ export default function Navbar({
                         <span className="w-7 h-7 rounded-lg bg-[#FBF6E7] flex items-center justify-center">
                           <Shield className="w-4 h-4 text-[#8A6D10]" />
                         </span>
-                        <span>Admin CRUD Panel</span>
+                         <span>{t("adminPanel")}</span>
                       </button>
                     )}
                   </div>
@@ -346,7 +356,7 @@ export default function Navbar({
                       className="w-full text-left px-3 py-2.5 rounded-lg text-[13px] font-semibold text-[#B42318] hover:bg-[#FEF3F2] flex items-center gap-3 transition-colors"
                     >
                       <LogOut className="w-4 h-4" />
-                      <span>Log Out</span>
+                       <span>{t("logout")}</span>
                     </button>
                   </div>
                 </div>
@@ -357,13 +367,20 @@ export default function Navbar({
               onClick={handleOpenAuth}
               className="px-6 py-2.5 rounded-full text-[13.5px] font-bold text-white bg-[#001d5f] hover:bg-[#1E3358] transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A227] focus-visible:ring-offset-2"
             >
-              Login / Sign in
+              {t("login")}
             </button>
           )}
         </div>
 
         {/* Mobile menu button */}
         <div className="flex lg:hidden items-center gap-2 shrink-0">
+          <button
+            onClick={toggleLanguage}
+            className="rounded-full border border-[#E7EAF0] bg-white px-3 py-1.5 text-[11px] font-black text-[#001d5f]"
+            aria-label={t("switchLanguage")}
+          >
+            {language === "en" ? "বাংলা" : "EN"}
+          </button>
           {user ? (
             <button
               onClick={handleOpenProfile}
@@ -386,7 +403,7 @@ export default function Navbar({
               onClick={handleOpenAuth}
               className="px-4 py-1.5 text-xs font-bold rounded-full bg-[#001d5f] text-white"
             >
-              Login
+              {t("loginShort")}
             </button>
           )}
           <button
@@ -462,7 +479,7 @@ export default function Navbar({
                   }}
                   className="py-2.5 px-3 rounded-xl bg-white border border-[#E7EAF0] text-xs font-bold text-[#001d5f] text-center"
                 >
-                  My Profile
+                   {t("profile")}
                 </button>
                 {user.role === "admin" && (
                   <button
@@ -472,7 +489,7 @@ export default function Navbar({
                     }}
                     className="py-2.5 px-3 rounded-xl bg-[#FBF6E7] text-[#8A6D10] text-xs font-bold text-center"
                   >
-                    Admin Panel
+                     {t("adminPanel")}
                   </button>
                 )}
               </div>
@@ -484,7 +501,7 @@ export default function Navbar({
                 }}
                 className="w-full text-xs text-[#B42318] font-bold py-2 bg-[#FEF3F2] rounded-lg text-center"
               >
-                Log out
+                 {t("logout")}
               </button>
             </div>
           ) : (
@@ -495,7 +512,7 @@ export default function Navbar({
               }}
               className="w-full py-3 rounded-xl bg-[#001d5f] text-white font-bold text-center shadow-sm"
             >
-              Sign In with Google / Phone
+               {t("login")}
             </button>
           )}
         </div>

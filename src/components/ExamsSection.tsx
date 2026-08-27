@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Calendar, FileQuestion, Search, Sparkles } from 'lucide-react';
 import { Exam } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 interface ExamsSectionProps {
   exams: Exam[];
@@ -15,6 +16,7 @@ export default function ExamsSection({
   onViewLeaderboard,
   onViewResult,
 }: ExamsSectionProps) {
+  const { t } = useLanguage();
   const [activeType, setActiveType] = useState<'Public' | 'Private'>('Public');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -31,7 +33,7 @@ export default function ExamsSection({
   const totalQuestions = exams.reduce((total, exam) => total + exam.questionsCount, 0);
 
   return (
-    <div className="min-h-screen bg-slate-50/80 py-6 sm:py-10">
+    <div className="min-h-screen rm-page-bg py-6 sm:py-10">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Exam Hub Header */}
         <section className="relative isolate mb-8 overflow-hidden rounded-[2rem] bg-[#071e22] px-6 py-8 text-white shadow-xl shadow-slate-900/10 sm:px-10 sm:py-10 lg:px-12 lg:py-12">
@@ -41,28 +43,28 @@ export default function ExamsSection({
             <div className="max-w-2xl">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-300/20 bg-amber-400/10 px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.16em] text-amber-200">
                 <Sparkles className="h-3.5 w-3.5 text-amber-300" />
-                Practice with purpose
+                {t('practiceWithPurpose')}
               </div>
               <h1 className="text-3xl font-black leading-[1.08] tracking-tight sm:text-4xl lg:text-5xl">
-                Test what you know. Find what to improve.
+                {t('examHubTitle')}
               </h1>
               <p className="mt-4 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
-                Take chapter-wise exams, compare your pace on the leaderboard, and turn every attempt into a smarter study plan.
+                {t('examHubDescription')}
               </p>
             </div>
 
             <div className="grid grid-cols-3 gap-2 sm:gap-3 lg:min-w-[350px]">
               <div className="rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm sm:p-4">
                 <p className="text-xl font-black sm:text-2xl">{exams.length}</p>
-                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">Total tests</p>
+                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">{t('totalTests')}</p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm sm:p-4">
                 <p className="text-xl font-black sm:text-2xl">{totalQuestions}+</p>
-                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">Questions</p>
+                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">{t('questions')}</p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm sm:p-4">
                 <p className="text-xl font-black sm:text-2xl">{publicExams + privateExams}</p>
-                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">Ways to practice</p>
+                <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-400 sm:text-xs">{t('waysToPractice')}</p>
               </div>
             </div>
           </div>
@@ -77,8 +79,8 @@ export default function ExamsSection({
                   <FileQuestion className="h-4 w-4" />
                 </div>
                 <div>
-                  <p className="text-sm font-black text-slate-900">Choose an assessment</p>
-                  <p className="text-xs font-medium text-slate-500">{filteredExams.length} exams match your view</p>
+                  <p className="text-sm font-black text-slate-900">{t('chooseAssessment')}</p>
+                  <p className="text-xs font-medium text-slate-500">{filteredExams.length} {t('examsMatch')}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -94,7 +96,7 @@ export default function ExamsSection({
                           : 'border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
                       }`}
                     >
-                      {type} <span className={activeType === type ? 'text-blue-100' : 'text-slate-400'}>{count}</span>
+                      {type === 'Public' ? t('public') : t('private')} <span className={activeType === type ? 'text-blue-100' : 'text-slate-400'}>{count}</span>
                     </button>
                   );
                 })}
@@ -107,7 +109,7 @@ export default function ExamsSection({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by chapter or subject..."
+                placeholder={t('searchExams', 'Search by chapter or subject...')}
                 aria-label="Search exams"
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-xs font-medium text-slate-800 outline-none transition focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-500/10 sm:text-sm"
               />
@@ -117,11 +119,11 @@ export default function ExamsSection({
 
         <div className="mb-4 flex items-center justify-between gap-3">
           <div>
-            <p className="text-[11px] font-black uppercase tracking-[0.16em] text-blue-600">{activeType} assessments</p>
-            <h2 className="mt-1 text-xl font-black tracking-tight text-slate-900 sm:text-2xl">Available exams</h2>
+            <p className="text-[11px] font-black uppercase tracking-[0.16em] text-blue-600">{activeType === 'Public' ? t('public') : t('private')} {t('examAssessments')}</p>
+            <h2 className="mt-1 text-xl font-black tracking-tight text-slate-900 sm:text-2xl">{t('availableExams')}</h2>
           </div>
           <span className="hidden rounded-full bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-500 sm:inline-flex">
-            {filteredExams.length} results
+            {filteredExams.length} {t('results', 'results')}
           </span>
         </div>
 

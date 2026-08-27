@@ -131,7 +131,7 @@ export default function TakeExamPage() {
   const answeredCount = Object.keys(selectedAnswers).length;
 
   return (
-    <div className="min-h-screen bg-slate-100 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen rm-page-bg py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-6">
         
         {/* Top Control Bar */}

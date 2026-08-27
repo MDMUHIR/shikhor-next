@@ -25,7 +25,7 @@ export default function ExamResultPage() {
   const badge = getGradeBadge(percentage);
 
   return (
-    <div className="min-h-screen bg-slate-50 py-10 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen rm-page-bg py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto space-y-6">
         
         {/* Result Card */}

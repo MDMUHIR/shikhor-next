@@ -10,8 +10,10 @@ import {
   ShieldCheck,
   Trophy,
 } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function ResultLookup() {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<"shikhor" | "board">("shikhor");
   const [examType, setExamType] = useState("RM-CENTRAL");
   const [board, setBoard] = useState("Dhaka");
@@ -47,7 +49,7 @@ export default function ResultLookup() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/80 py-6 sm:py-10">
+    <div className="min-h-screen rm-page-bg py-6 sm:py-10">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Result Portal Header */}
         <section className="relative isolate mb-8 overflow-hidden rounded-[2rem] bg-[#071e22] px-6 py-8 text-white shadow-xl shadow-slate-900/10 sm:px-10 sm:py-10 lg:px-12 lg:py-12">
@@ -57,14 +59,13 @@ export default function ResultLookup() {
             <div className="max-w-2xl">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-400/10 px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.16em] text-emerald-200">
                 <ShieldCheck className="h-3.5 w-3.5 text-emerald-300" />
-                Official result portal
+                {t("officialPortal")}
               </div>
               <h1 className="text-3xl font-black leading-[1.08] tracking-tight sm:text-4xl lg:text-5xl">
-                Your progress, verified.
+                {t("verifiedProgress")}
               </h1>
               <p className="mt-4 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
-                Find your Shikhor performance record or verify your official
-                board result in a few simple steps.
+                {t("resultDescription")}
               </p>
             </div>
             <div className="hidden rounded-2xl border border-white/10 bg-white/5 p-4 sm:block">
@@ -86,12 +87,12 @@ export default function ResultLookup() {
             className={`rounded-xl px-4 py-3 text-left transition-all cursor-pointer ${activeTab === "shikhor" ? "bg-blue-600 text-white shadow-md shadow-blue-600/20" : "text-slate-600 hover:bg-slate-50"}`}
           >
             <span className="block text-sm font-black sm:text-base">
-              Shikhor Exam Result
+              {t("shikhorExamResult")}
             </span>
             <span
               className={`mt-1 block text-[11px] font-medium ${activeTab === "shikhor" ? "text-blue-100" : "text-slate-400"}`}
             >
-              Model tests and mock exams
+              {t("modelTests")}
             </span>
           </button>
           <button
@@ -99,12 +100,12 @@ export default function ResultLookup() {
             className={`rounded-xl px-4 py-3 text-left transition-all cursor-pointer ${activeTab === "board" ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20" : "text-slate-600 hover:bg-slate-50"}`}
           >
             <span className="block text-sm font-black sm:text-base">
-              Board Result
+              {t("boardResult")}
             </span>
             <span
               className={`mt-1 block text-[11px] font-medium ${activeTab === "board" ? "text-emerald-100" : "text-slate-400"}`}
             >
-              HSC, SSC and equivalent exams
+              {t("boardExams")}
             </span>
           </button>
         </div>
