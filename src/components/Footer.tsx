@@ -18,7 +18,7 @@ export default function Footer({ onNavigate }: FooterProps) {
     else if (view === 'instructors') navigate('/instructors');
     else if (view === 'exams') navigate('/exams');
     else if (view === 'result') navigate('/result');
-    else if (view === 'products') navigate('/products');
+    else if (view === 'store') navigate('/store');
     else if (view === 'learning-paths') navigate('/learning-paths');
     else if (view === 'reviews') navigate('/reviews');
     else navigate(`/${view}`);
@@ -121,11 +121,11 @@ export default function Footer({ onNavigate }: FooterProps) {
               </li>
               <li>
                 <button
-                  onClick={() => handleLinkClick('products')}
+                  onClick={() => handleLinkClick('store')}
                   className="flex cursor-pointer items-center gap-1.5 transition-colors hover:text-blue-600"
                 >
                   <ArrowRight className="h-3.5 w-3.5 text-slate-400" />
-                  E-Books &amp; Notes
+                  Store: E-Books &amp; Notes
                 </button>
               </li>
             </ul>

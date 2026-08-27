@@ -8,6 +8,11 @@ export interface Instructor {
   avatar: string;
   coursesCount: number;
   studentsCount: number;
+  socialLinks?: {
+    facebook?: string;
+    youtube?: string;
+    instagram?: string;
+  };
 }
 
 export interface Course {
@@ -193,4 +198,3 @@ export interface UserProfile {
   paymentHistory?: PaymentRecord[];
   examHistory?: UserExamRecord[];
 }
-

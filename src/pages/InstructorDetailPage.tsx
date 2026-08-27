@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import CourseCard from '../components/CourseCard';
-import { ArrowLeft, Users, Award, BookOpen, GraduationCap, Star, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Users, Award, BookOpen, GraduationCap, Star, CheckCircle2, Facebook, Youtube, Instagram } from 'lucide-react';
 
 export default function InstructorDetailPage() {
   const { instructorId } = useParams<{ instructorId: string }>();
@@ -72,11 +72,32 @@ export default function InstructorDetailPage() {
               <p className="text-sm font-semibold text-slate-600 mt-1">{instructor.role}</p>
             </div>
 
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-2xl">
-              {instructor.bio}
-            </p>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-2xl">
+                {instructor.bio}
+              </p>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+              <div className="flex flex-wrap items-center justify-center gap-2 md:justify-start">
+                <span className="mr-1 text-xs font-bold text-slate-500">Find {instructor.name} on</span>
+                {[
+                  { label: 'Facebook', href: instructor.socialLinks?.facebook || `https://www.facebook.com/search/top?q=${encodeURIComponent(instructor.name)}`, Icon: Facebook },
+                  { label: 'YouTube', href: instructor.socialLinks?.youtube || `https://www.youtube.com/results?search_query=${encodeURIComponent(instructor.name)}`, Icon: Youtube },
+                  { label: 'Instagram', href: instructor.socialLinks?.instagram || `https://www.instagram.com/explore/search/keyword/?q=${encodeURIComponent(instructor.name)}`, Icon: Instagram },
+                ].map(({ label, href, Icon }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`${label}: ${instructor.name}`}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                  >
+                    <Icon className="h-3.5 w-3.5" />
+                    {label}
+                  </a>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
               <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 text-center md:text-left">
                 <span className="text-[10px] text-slate-400 block font-semibold">Experience</span>
                 <span className="font-bold text-slate-900 text-sm">{instructor.experience}</span>

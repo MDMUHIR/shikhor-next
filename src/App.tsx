@@ -16,7 +16,7 @@ import ExamsPage from './pages/ExamsPage';
 import TakeExamPage from './pages/TakeExamPage';
 import ExamLeaderboardPage from './pages/ExamLeaderboardPage';
 import ExamResultPage from './pages/ExamResultPage';
-import ProductsPage from './pages/ProductsPage';
+import StorePage from './pages/StorePage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import InstructorsPage from './pages/InstructorsPage';
 import InstructorDetailPage from './pages/InstructorDetailPage';
@@ -110,11 +110,13 @@ function AppContent() {
           <Route path="/exams/:examId/result" element={<ExamResultPage />} />
           <Route path="/leaderboard/:examId" element={<ExamLeaderboardPage />} />
 
-          {/* 5. Products & Publications Bookstore */}
-          <Route path="/products" element={<ProductsPage />} />
+          {/* 5. Store & Publications */}
+          <Route path="/store" element={<StorePage />} />
+          <Route path="/store/:productId" element={<ProductDetailPage />} />
+          {/* Legacy product URLs remain supported. */}
+          <Route path="/products" element={<StorePage />} />
           <Route path="/products/:productId" element={<ProductDetailPage />} />
-          <Route path="/ebooks" element={<ProductsPage />} />
-          <Route path="/store" element={<ProductsPage />} />
+          <Route path="/ebooks" element={<StorePage />} />
 
           {/* 6. Instructors & Faculty */}
           <Route path="/instructors" element={<InstructorsPage />} />

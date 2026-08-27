@@ -19,7 +19,7 @@ export default function ProductDetailPage() {
         <h2 className="text-2xl font-black text-slate-900 mb-2">Publication Not Found</h2>
         <p className="text-sm text-slate-500 mb-6">The requested book or digital notes item is unavailable.</p>
         <button
-          onClick={() => navigate('/products')}
+           onClick={() => navigate('/store')}
           className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -34,7 +34,7 @@ export default function ProductDetailPage() {
       <div className="max-w-5xl mx-auto space-y-6">
         
         <button
-          onClick={() => navigate('/products')}
+          onClick={() => navigate('/store')}
           className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-blue-600 transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
