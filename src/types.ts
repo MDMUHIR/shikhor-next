@@ -37,6 +37,12 @@ export interface Course {
     duration: string;
     lessons: string[];
   }[];
+  courseIntroVideo?: {
+    title: string;
+    youtubeId?: string;
+    thumbnail: string;
+    duration: string;
+  };
   demoVideos: {
     title: string;
     instructor: string;

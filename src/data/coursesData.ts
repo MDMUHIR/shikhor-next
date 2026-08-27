@@ -135,6 +135,12 @@ export const COURSES: Course[] = [
       INSTRUCTORS[4], // Niazmorshed Faysal
       INSTRUCTORS[5], // S M Parvez Ahmed
     ],
+    courseIntroVideo: {
+      title: 'PCMB HSC-28 Course Orientation & Complete Roadmap',
+      youtubeId: 'WO1KcxKmgYk',
+      thumbnail: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&auto=format&fit=crop&q=80',
+      duration: '08:24',
+    },
     shortDescription: 'Complete preparation of Physics 1st, Chemistry 1st, Higher Math 1st, and Biology 1st Paper for HSC 2028 batch.',
     fullDescription: `প্রিয় HSC 28 ব্যাচ,\nএসএসসি পরীক্ষা তো শেষ! এখন তোমরা HSC 28। এসএসসিতে তোমরা সিলেবাস শেষ করার জন্য ২ বছরেরও বেশি সময় পেয়েছো, তবে HSC এর ক্ষেত্রে ব্যাপারটা একটু ভিন্ন। HSC এর সিলেবাস SSC এর দ্বিগুণ এর ও বেশি! আর এই সিলেবাস কমপ্লিট করার জন্য সময় থাকে ২ বছরেরও কম !!!\n\nতাই এই অল্প সময়ের মধ্যেই প্রতিটি বিষয়ের বেসিক কনসেপ্ট ক্লিয়ার করে সম্পূর্ণ সিলেবাস শেষ করতে ও বোর্ড পরীক্ষার পাশাপাশি এডমিশন পর্যন্ত ১০০% প্রস্তুতি নিশ্চিত করতে Redwan's Method নিয়ে এসেছে PCMB 1st Paper Combo Course HSC-28।\n\nএই কোর্সে যা যা থাকছে:\n• ৪টি মূল বিষয়ের সম্পূর্ণ প্রথম পত্রের বেসিক টু প্রো লাইভ ও রেকর্ডেড ক্লাস\n• স্পেশাল চ্যাপ্টারওয়াইজ প্র্যাকটিস শিট ও লেকচার নোট PDF\n• রেগুলার ডেইলি ও উইকলি মডেল টেস্ট উইথ ইনস্ট্যান্ট অটোমেটেড রেজাল্ট ও লিডারবোর্ড\n• ২৪/৭ ডেডিকেটেড ডাউট সলভিং টেলিগ্রাম ও ডিসকর্ড গ্রুপ সাপোর্ট\n• বোর্ড স্ট্যান্ডার্ড CQ & MCQ সলভিং সেশন এবং বুয়েট/মেডিকেল ফাউন্ডেশন বিল্ডার।`,
     features: [
@@ -235,6 +241,12 @@ export const COURSES: Course[] = [
       INSTRUCTORS[4], // Niazmorshed Faysal
       INSTRUCTORS[8], // Jilani Sir
     ],
+    courseIntroVideo: {
+      title: 'EBI 2.0 Batch Orientation & Learning Roadmap',
+      youtubeId: 'WO1KcxKmgYk',
+      thumbnail: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1200&auto=format&fit=crop&q=80',
+      duration: '07:10',
+    },
     shortDescription: 'Comprehensive preparation for English 1st & 2nd, Bangla 1st & 2nd, and ICT for HSC 2028 batch.',
     fullDescription: `এইচএসসি পরীক্ষায় জিপিএ ৫ ও গোল্ডেন পাওয়ার জন্য আবশ্যিক বিষয়গুলো (বাংলা, ইংরেজি, আইসিটি) অত্যন্ত গুরুত্বপূর্ণ ভূমিকা পালন করে। সঠিক গাইডলাইনের অভাবে প্রতি বছর অনেক মেধাবী শিক্ষার্থী এই বিষয়গুলোতে এ+ মিস করে।\n\nRedwan's Method এর EBI 2.0 কোর্সে থাকছে বাংলাদেশের সেরা শিক্ষকদের ক্লাসের মাধ্যমে ৩টি বিষয়ের সম্পূর্ণ সিলেবাস টু দ্য পয়েন্ট কভারেজ।`,
     features: [
@@ -292,6 +304,12 @@ export const COURSES: Course[] = [
       INSTRUCTORS[2],
       INSTRUCTORS[3],
     ],
+    courseIntroVideo: {
+      title: 'SSC 27 Foundation Batch Course Overview',
+      youtubeId: 'WO1KcxKmgYk',
+      thumbnail: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200&auto=format&fit=crop&q=80',
+      duration: '06:42',
+    },
     shortDescription: 'Complete 9th & 10th Grade Science foundation covering Physics, Chemistry, General Math & Higher Math.',
     fullDescription: `নবম ও দশম শ্রেণির শিক্ষার্থীদের জন্য বিজ্ঞান বিভাগের সম্পূর্ণ সিলেবাস সহজ ও আকর্ষণীয়ভাবে আয়ত্ত করার প্রিমিয়াম কোর্স।`,
     features: [
@@ -342,6 +360,12 @@ export const COURSES: Course[] = [
       INSTRUCTORS[1],
       INSTRUCTORS[2],
     ],
+    courseIntroVideo: {
+      title: 'BUET & Medical Admission Mastery Course Orientation',
+      youtubeId: 'WO1KcxKmgYk',
+      thumbnail: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&auto=format&fit=crop&q=80',
+      duration: '09:05',
+    },
     shortDescription: 'Advanced problem solving, concept deep-dives, and BUET/CKRUET/Medical standard question bank cracking.',
     fullDescription: `বিশ্ববিদ্যালয় ভর্তি পরীক্ষায় শীর্ষস্থান অর্জনের লক্ষ্যে সাজানো এক্সক্লুসিভ ইঞ্জিনিয়ারিং ও মেডিকেল ফাউন্ডেশন কোর্স।`,
     features: [
@@ -914,4 +938,3 @@ export const PRODUCTS: ProductItem[] = [
 
 export const COURSES_DATA = COURSES;
 export const EXAMS_DATA = EXAMS;
-

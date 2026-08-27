@@ -116,6 +116,19 @@ export default function CourseDetail({
     ? Math.max(0, course.price - appliedCoupon.discount)
     : course.price;
 
+  const introVideo = course.courseIntroVideo || course.demoVideos[0];
+  const openDemoTab = (video: (typeof course.demoVideos)[number] | undefined) => {
+    if (!video) return;
+    setSelectedDemoVideo(video);
+    setActiveTab("demo");
+    setTimeout(() => {
+      document.getElementById("course-content")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 0);
+  };
+
   return (
     <div className="min-h-screen py-8 sm:py-12 bg-gradient-to-br from-slate-50 via-white to-blue-50/60 font-sans relative overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -128,50 +141,72 @@ export default function CourseDetail({
           <span>Back to Courses</span>
         </button>
 
-        {/* Course Header Bar */}
-        <div className="mb-8 sm:mb-10">
-          <div className="inline-block relative max-w-4xl">
-            <span className="inline-flex items-center gap-1.5 mb-3 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-[10px] sm:text-xs font-bold uppercase tracking-[0.12em]">
-              <Sparkles className="w-3.5 h-3.5" />
-              Premium Learning Program
-            </span>
-            <h1 className="text-2xl sm:text-3xl lg:text-5xl font-black text-slate-950 tracking-tight leading-tight">
-              {course.title}
-            </h1>
-            <div className="h-1.5 w-20 bg-gradient-to-r from-blue-600 to-indigo-500 rounded-full mt-3 shadow-sm" />
-          </div>
+        {/* Course Hero with the details video above the fold */}
+        <section className="relative mb-8 overflow-hidden rounded-[2rem] bg-[#071e22] text-white shadow-xl shadow-slate-900/10">
+          <div className="absolute -right-24 -top-32 h-80 w-80 rounded-full bg-blue-500/20 blur-3xl" />
+          <div className="absolute -bottom-40 left-1/3 h-96 w-96 rounded-full bg-indigo-500/15 blur-3xl" />
+          <div className="relative grid lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="relative aspect-video overflow-hidden bg-slate-950 lg:aspect-auto lg:min-h-[430px]">
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${introVideo?.youtubeId || "WO1KcxKmgYk"}?autoplay=0&rel=0`}
+                title={introVideo?.title || `${course.title} course details video`}
+                className="absolute inset-0 h-full w-full border-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+              <div className="pointer-events-none absolute left-4 top-4 rounded-full border border-white/20 bg-slate-950/65 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-white backdrop-blur-md">
+                Course details video
+              </div>
+            </div>
 
-          <div className="flex flex-wrap items-center gap-4 mt-3 text-slate-600 text-sm">
-            <div className="flex items-center gap-1.5 font-medium">
-              <Users className="w-4 h-4 text-blue-600" />
-              <span>
-                <strong className="text-slate-900">
-                  {course.enrolledCount.toLocaleString()}
-                </strong>{" "}
-                students enrolled
-              </span>
+            <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
+              <div className="mb-5 flex flex-wrap items-center gap-2 text-[10px] font-black uppercase tracking-[0.14em] text-blue-200">
+                <span className="rounded-full bg-blue-400/15 px-3 py-1.5 ring-1 ring-inset ring-blue-300/20">
+                  {course.subCategory || "Premium learning program"}
+                </span>
+                {course.isPopular && (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-400 px-3 py-1.5 text-amber-950">
+                    <Sparkles className="h-3.5 w-3.5" />
+                    Popular choice
+                  </span>
+                )}
+              </div>
+              <h1 className="text-3xl font-black leading-[1.08] tracking-tight sm:text-4xl">
+                {course.title}
+              </h1>
+              <p className="mt-5 text-sm leading-7 text-slate-300 sm:text-base">
+                {course.shortDescription}
+              </p>
+              <div className="mt-6 grid grid-cols-3 gap-2 border-y border-white/10 py-4 text-center sm:gap-4">
+                <div>
+                  <p className="text-lg font-black text-white">{course.enrolledCount.toLocaleString()}+</p>
+                  <p className="mt-1 text-[10px] font-semibold text-slate-400">Students</p>
+                </div>
+                <div className="border-x border-white/10">
+                  <p className="flex items-center justify-center gap-1 text-lg font-black text-white">
+                    {course.rating} <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                  </p>
+                  <p className="mt-1 text-[10px] font-semibold text-slate-400">Rating</p>
+                </div>
+                <div>
+                  <p className="text-lg font-black text-white">{course.demoVideos.length}</p>
+                  <p className="mt-1 text-[10px] font-semibold text-slate-400">Demo classes</p>
+                </div>
+              </div>
+              <button
+                onClick={() => openDemoTab(course.demoVideos[0])}
+                disabled={!course.demoVideos[0]}
+                className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-black text-[#0d2f35] shadow-lg transition hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+              >
+                <PlayCircle className="h-4 w-4 fill-blue-600 text-blue-600" />
+                Explore demo classes
+              </button>
             </div>
-            <span>•</span>
-            <div className="flex items-center gap-1 text-amber-500 font-medium">
-              <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-              <span className="font-bold text-slate-800">{course.rating}</span>
-              <span className="text-slate-500">
-                ({courseReviews.length} reviews)
-              </span>
-            </div>
-            <span>•</span>
-            <button
-              onClick={() => navigate(`/watch/${course.slug || course.id}`)}
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-800 bg-blue-50 px-3 py-1 rounded-full border border-blue-200 cursor-pointer"
-            >
-              <Tv className="w-3.5 h-3.5" />
-              <span>Watch Video Classroom</span>
-            </button>
           </div>
-        </div>
+        </section>
 
         {/* Main 2-Column Content Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8 items-start">
+        <div id="course-content" className="scroll-mt-24 grid grid-cols-1 items-start gap-6 lg:grid-cols-12 xl:gap-8">
           {/* Left Column: Tabs & Content (Overview / Demo Class / Reviews) */}
           <div className="lg:col-span-8 space-y-6">
             {/* White Container Card with Tabs */}
@@ -216,32 +251,6 @@ export default function CourseDetail({
               {/* Tab 1: Overview Content */}
               {activeTab === "overview" && (
                 <div className="p-6 sm:p-8 space-y-8">
-                  {/* Direct Watch Class CTA Bar */}
-                  <div className="bg-gradient-to-br from-blue-600 via-blue-650 to-indigo-700 text-white rounded-2xl p-5 sm:p-6 shadow-[0_18px_40px_-20px_rgba(37,99,235,0.65)] relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div>
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 text-blue-100 text-[11px] font-bold uppercase tracking-wider mb-1">
-                        <Sparkles className="w-3 h-3 text-amber-300" />
-                        <span>Interactive Video Player</span>
-                      </div>
-                      <h3 className="text-base sm:text-lg font-bold">
-                        Watch Live Recorded Lectures with Q&amp;A
-                      </h3>
-                      <p className="text-xs text-blue-100 mt-0.5">
-                        Access video playback, speed controls, handouts, and ask
-                        questions to instructors.
-                      </p>
-                    </div>
-                    <button
-                      onClick={() =>
-                        navigate(`/watch/${course.slug || course.id}`)
-                      }
-                      className="px-5 py-2.5 rounded-xl bg-white hover:bg-blue-50 text-blue-700 font-bold text-xs shadow-md transition-all shrink-0 cursor-pointer flex items-center justify-center gap-2"
-                    >
-                      <PlayCircle className="w-4 h-4 fill-blue-600 text-white" />
-                      <span>Launch Watch Page</span>
-                    </button>
-                  </div>
-
                   {/* Combo Instructors Row */}
                   <div>
                     <h3 className="text-base sm:text-lg font-extrabold text-slate-950 mb-4 tracking-tight">
@@ -291,22 +300,6 @@ export default function CourseDetail({
                       ) : (
                         <ChevronDown className="w-4 h-4" />
                       )}
-                    </button>
-                  </div>
-
-                  {/* Special Notice Video Callout Box */}
-                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50/70 border border-blue-200/70 rounded-2xl p-5 shadow-sm">
-                    <h4 className="font-bold text-blue-900 text-sm sm:text-base mb-1">
-                      বি.দ্র. কেনার পূর্বে অবশ্যই এই ভিডিওটি দেখে নাও :
-                    </h4>
-                    <button
-                      onClick={() =>
-                        navigate(`/watch/${course.slug || course.id}`)
-                      }
-                      className="text-xs sm:text-sm text-blue-600 font-semibold underline hover:text-blue-800 break-all text-left mt-1 inline-flex items-center gap-1 cursor-pointer"
-                    >
-                      <PlayCircle className="w-4 h-4 shrink-0" />
-                      <span>Watch Full Orientation &amp; Demo Video</span>
                     </button>
                   </div>
 
@@ -406,10 +399,10 @@ export default function CourseDetail({
                       </h4>
                       {course.demoVideos.map((video) => (
                         <div
-                          key={video.id}
+                          key={video.title}
                           onClick={() => setSelectedDemoVideo(video)}
                           className={`p-3.5 rounded-xl border flex items-center justify-between gap-3 cursor-pointer transition-all ${
-                            selectedDemoVideo?.id === video.id
+                            selectedDemoVideo?.title === video.title
                               ? "bg-blue-50 border-blue-400"
                               : "bg-white border-slate-200 hover:bg-slate-50"
                           }`}
@@ -683,33 +676,6 @@ export default function CourseDetail({
           {/* Right Column: Sticky Checkout Sidebar */}
           <div className="lg:col-span-4 sticky top-24 space-y-4">
             <div className="bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-white/80 shadow-[0_24px_70px_-30px_rgba(15,23,42,0.35)] p-5 sm:p-6 overflow-hidden">
-              {/* Banner Image Preview */}
-              <div className="relative rounded-2xl overflow-hidden aspect-video mb-5 shadow-lg bg-slate-900 group ring-1 ring-slate-200/70">
-                <img
-                  src={course.banner}
-                  alt={course.title}
-                  className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-300"
-                />
-                <div className="absolute top-2 left-2 px-2.5 py-1 rounded-md bg-slate-950/80 backdrop-blur-xs text-white text-[11px] font-bold">
-                  RMH
-                </div>
-                <button
-                  onClick={() => navigate(`/watch/${course.slug || course.id}`)}
-                  className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold text-xs gap-1.5 backdrop-blur-xs cursor-pointer"
-                >
-                  <PlayCircle className="w-8 h-8 fill-white text-blue-600" />
-                </button>
-              </div>
-
-              {/* Watch Class Direct Link */}
-              <button
-                onClick={() => navigate(`/watch/${course.slug || course.id}`)}
-                className="w-full mb-4 py-3 rounded-xl border border-blue-200/80 bg-gradient-to-r from-blue-50 to-indigo-50/70 hover:bg-blue-100 text-blue-700 text-xs font-bold flex items-center justify-center gap-2 transition-colors cursor-pointer"
-              >
-                <Tv className="w-4 h-4 text-blue-600" />
-                <span>Watch Class Player &amp; Q&amp;A</span>
-              </button>
-
               {/* Price Row */}
               <div className="flex items-baseline justify-between mb-4">
                 <div className="flex items-baseline gap-2">
