@@ -61,7 +61,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                 <Facebook className="w-4 h-4" />
               </a>
               <a
-                href="mailto:support@shikhor.edu.bd"
+                href="mailto:hello@shikhor.example"
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors hover:bg-emerald-600 hover:text-white"
                 aria-label="Email Us"
               >
@@ -142,15 +142,22 @@ export default function Footer({ onNavigate }: FooterProps) {
               <li className="flex items-start gap-2.5">
                 <FileText className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
                 <span>
+                  <strong className="block text-slate-900">Company Name:</strong>
+                  SHIKHOR Learning Ltd.
+                </span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <FileText className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                <span>
                   <strong className="block text-slate-900">Trade License No:</strong>
-                  TRAD/DNCC/044200/2024
+                  TRAD/2026/001
                 </span>
               </li>
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
                 <span>
                   <strong className="block text-slate-900">Office Address:</strong>
-                  House 1085, Road 6/A, Avenue 8, Mirpur DOHS, Dhaka, Bangladesh
+                  Dhaka, Bangladesh
                 </span>
               </li>
             </ul>
@@ -164,14 +171,14 @@ export default function Footer({ onNavigate }: FooterProps) {
             <ul className="space-y-3 text-sm text-slate-600">
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
-                <a href="tel:09617331133" className="font-medium hover:text-blue-600">
-                  09617331133
+                <a href="tel:+8801700000000" className="font-medium hover:text-blue-600">
+                  +880 1700-000000
                 </a>
               </li>
               <li className="flex items-start gap-2.5">
                 <Mail className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                <a href="mailto:support@shikhor.edu.bd" className="break-all hover:text-blue-600">
-                  support@shikhor.edu.bd
+                <a href="mailto:hello@shikhor.example" className="break-all hover:text-blue-600">
+                  hello@shikhor.example
                 </a>
               </li>
             </ul>
