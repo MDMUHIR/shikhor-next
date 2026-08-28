@@ -11,7 +11,11 @@ interface CourseCardProps {
 
 
 export default function CourseCard({ course, onSelect, onEnroll }: CourseCardProps) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+  const categoryLabel = t(`category${course.category}`, course.category);
+  const formatNumber = (value: number) => value.toLocaleString(language === 'bn' ? 'bn-BD' : 'en-US');
+  const title = language === 'bn' ? course.titleBn || course.title : course.title;
+  const shortDescription = language === 'bn' ? course.shortDescriptionBn || course.shortDescription : course.shortDescription;
   return (
     <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group hover:border-blue-200">
       
@@ -30,19 +34,19 @@ export default function CourseCard({ course, onSelect, onEnroll }: CourseCardPro
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
           <span className="px-2.5 py-1 text-[11px] font-bold rounded-full bg-blue-600 text-white shadow-sm">
-            {course.category}
+             {categoryLabel}
           </span>
           {course.isPopular && (
             <span className="px-2.5 py-1 text-[11px] font-bold rounded-full bg-amber-500 text-white flex items-center gap-1 shadow-sm">
               <Sparkles className="w-3 h-3" />
-              Popular
+               {t('popular')}
             </span>
           )}
         </div>
 
         <div className="absolute top-3 right-3">
           <span className="px-2.5 py-1 text-[11px] font-bold rounded-full bg-emerald-600 text-white shadow-sm">
-            {course.discountPercentage}% OFF
+             {course.discountPercentage}% {t('off')}
           </span>
         </div>
 
@@ -50,7 +54,7 @@ export default function CourseCard({ course, onSelect, onEnroll }: CourseCardPro
         <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs">
           <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-full">
             <Users className="w-3.5 h-3.5 text-blue-300" />
-            <span className="font-semibold">{course.enrolledCount.toLocaleString()} enrolled</span>
+             <span className="font-semibold">{formatNumber(course.enrolledCount)} {t('enrolledLabel')}</span>
           </div>
 
           <div className="flex items-center gap-1 bg-black/40 backdrop-blur-xs px-2 py-1 rounded-full text-amber-300">
@@ -67,10 +71,10 @@ export default function CourseCard({ course, onSelect, onEnroll }: CourseCardPro
             onClick={() => onSelect(course.id)}
             className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 cursor-pointer mb-2"
           >
-            {course.title}
+            {title}
           </h3>
           <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-4">
-            {course.shortDescription}
+            {shortDescription}
           </p>
 
           {/* Instructors Avatars */}
@@ -102,10 +106,10 @@ export default function CourseCard({ course, onSelect, onEnroll }: CourseCardPro
           <div>
             <div className="flex items-baseline gap-1.5">
               <span className="text-xl font-extrabold text-blue-600">
-                ৳{course.price.toLocaleString()}
+                 ৳{formatNumber(course.price)}
               </span>
               <span className="text-xs text-slate-400 line-through">
-                ৳{course.originalPrice.toLocaleString()}
+                 ৳{formatNumber(course.originalPrice)}
               </span>
             </div>
           </div>

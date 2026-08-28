@@ -13,7 +13,7 @@ import { HeroSlide } from "../types";
 export const heroSlides: HeroSlide[] = [
   {
     id: "hero-slide-1",
-    image: "/images/1000228091-1780734620992.jpg",
+    image: "/images/heroslider/shikhor academy poster 1.png",
     alt: "Homepage promotional banner",
     link: "/courses",
     isActive: true,
@@ -21,7 +21,7 @@ export const heroSlides: HeroSlide[] = [
   },
   {
     id: "hero-slide-2",
-    image: "/images/FRPB27-Web-All-teacher-Scicence.jpg-1786780135610.jpeg",
+    image: "/images/heroslider/shikhor academy poster 2.png",
     alt: "FRPB27 Web All Teachers Science banner",
     courseId: "pcmb-1st-paper-combo-hsc28",
     isActive: true,
@@ -29,8 +29,7 @@ export const heroSlides: HeroSlide[] = [
   },
   {
     id: "hero-slide-3",
-    image:
-      "/images/Physics-1st-Paper-Full-Course-HSC-28-Web.jpg-1778044784215.jpeg",
+    image: "/images/heroslider/shikhor academy poster 3.png",
     alt: "Physics 1st Paper Full Course HSC 28 banner",
     courseId: "pcmb-1st-paper-combo-hsc28",
     isActive: true,

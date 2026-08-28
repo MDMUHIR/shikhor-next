@@ -5,7 +5,7 @@ import LearnDashboard from '../components/LearnDashboard';
 
 export default function LearnPage() {
   const navigate = useNavigate();
-  const { user, courses, setActiveLiveClassCourse } = useApp();
+  const { user, courses } = useApp();
 
   const enrolledCourses = courses.filter((c) =>
     user?.enrolledCourseIds.includes(c.id)

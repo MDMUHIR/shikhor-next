@@ -384,7 +384,7 @@ export default function CourseDetail({
                     {selectedDemoVideo && (
                       <div className="aspect-video w-full rounded-2xl overflow-hidden bg-slate-950 shadow-lg border border-slate-800 relative mb-6">
                         <iframe
-                          src={`https://www.youtube-nocookie.com/embed/${selectedDemoVideo.youtubeId || "WO1KcxKmgYk"}?autoplay=0`}
+                           src={`https://www.youtube-nocookie.com/embed/${selectedDemoVideo.youtubeId || "WO1KcxKmgYk"}?autoplay=0`}
                           title={selectedDemoVideo.title}
                           className="w-full h-full border-0"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

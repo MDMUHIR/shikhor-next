@@ -30,6 +30,8 @@ export interface Course {
   reviewsCount: number;
   instructors: Instructor[];
   shortDescription: string;
+  titleBn?: string;
+  shortDescriptionBn?: string;
   fullDescription: string;
   features: string[];
   syllabus: {
